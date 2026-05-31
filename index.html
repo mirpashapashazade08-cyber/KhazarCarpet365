@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Çeşni – Interactive Carpet Designer</title>
+  <style>
+    /* ── THEME TOKENS ─────────────────────────── */
+    :root {
+      --sb-bg: rgba(244,244,250,0.98); --cg-bg: #f0f0f8;
+      --bd: #dcdce8; --tx: #1a2535; --ts: #888;
+      --ac: #b32d2e; --lbl: #bbb; --inp-bg: #fff;
+      --shadow: rgba(0,0,0,0.55);
+    }
+    html.dark {
+      --sb-bg: rgba(16,16,28,0.98); --cg-bg: #141424;
+      --bd: #2a2a40; --tx: #d8d8ee; --ts: #666;
+      --ac: #e04444; --lbl: #444; --inp-bg: #1e1e30;
+      --shadow: rgba(0,0,0,0.8);
+    }
+
+    /* ── RESET ────────────────────────────────── */
+    html, body { height:100%; margin:0; padding:0; overflow:hidden; background:#0a0a12; }
+    * { box-sizing:border-box; }
+
+    /* ── APP SHELL ────────────────────────────── */
+    #app {
+      display:flex; height:100vh;
+      font-family:'Segoe UI',system-ui,sans-serif;
+      background-image:
+        linear-gradient(rgba(10,10,18,.82),rgba(10,10,18,.82)),
+        url('https://images.unsplash.com/photo-1583850384879-130cb0460481?q=80&w=2070');
+      background-size:cover; background-position:center; overflow:hidden;
+    }
+
+    /* ── SIDEBAR ──────────────────────────────── */
+    #sb {
+      width:272px; min-width:272px;
+      background:var(--sb-bg); backdrop-filter:blur(14px);
+      padding:12px; box-shadow:2px 0 24px var(--shadow);
+      display:flex; flex-direction:column; gap:7px;
+      z-index:10; overflow-y:auto; transition:background .25s;
+    }
+    #sb::-webkit-scrollbar{width:3px}
+    #sb::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+
+    /* header */
+    .sb-head{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:2px solid var(--bd);padding-bottom:9px;margin-bottom:2px}
+    .sb-head h1{font-size:1.22rem;color:var(--ac);margin:0 0 2px;letter-spacing:-.3px}
+    .sb-head p{font-size:.7rem;color:var(--ts);margin:0}
+
+    /* control group */
+    .cg{display:flex;flex-direction:column;gap:5px;background:var(--cg-bg);padding:9px;border-radius:8px;border:1px solid var(--bd);transition:background .25s,border-color .25s}
+    .cg-t{font-weight:700;font-size:.76rem;color:var(--tx);display:flex;align-items:center;gap:4px;line-height:1}
+
+    /* inputs */
+    input[type=color]{width:100%;height:30px;border:none;border-radius:5px;cursor:pointer;padding:0}
+    input[type=number]{padding:4px 6px;border:1px solid var(--bd);border-radius:4px;font-size:.82rem;width:64px;background:var(--inp-bg);color:var(--tx)}
+    input[type=range]{width:100%;cursor:pointer;accent-color:var(--ac);height:4px;margin:3px 0}
+    input[type=file]{font-size:.7rem;color:var(--tx);width:100%}
+    .zm-r{font-size:.68rem;color:var(--ts);text-align:center;margin-top:-2px}
+
+    /* buttons */
+    button{background:#2c3e50;color:#fff;border:none;padding:6px 9px;border-radius:6px;cursor:pointer;font-weight:600;font-size:.76rem;transition:filter .12s,transform .08s;line-height:1.2}
+    button:hover{filter:brightness(1.18)}
+    button:active{transform:scale(.97)}
+    button.on{background:var(--ac)!important;box-shadow:inset 0 2px 5px rgba(0,0,0,.3)}
+    button:disabled{opacity:.35;cursor:default}
+    .g{background:#1a9e5c}.o{background:#d97706}.r{background:#c0392b}.p{background:#7c3aed}.b{background:#1d6fa4}.tl{background:#0f8a72}
+    .row2{display:flex;gap:5px}.row2 button{flex:1}
+
+    /* dark toggle */
+    .dkbtn{background:none!important;border:1px solid var(--bd);color:var(--tx);padding:3px 8px;font-size:.7rem;border-radius:20px;font-weight:400}
+    .dkbtn:hover{filter:none;background:var(--bd)!important}
+
+    /* tools grid */
+    .tools{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+    .tools button{padding:5px 2px;font-size:.7rem;text-align:center}
+
+    /* canvas presets */
+    .presets{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+    .presets button{padding:5px 2px;font-size:.64rem;text-align:center;line-height:1.25;background:#1d6fa4}
+    .presets button b{font-size:.68rem}
+
+    /* dim row */
+    .dim-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .dc{display:flex;flex-direction:column;align-items:center;gap:1px}
+    .dl{font-size:.64rem;color:var(--ts)}
+
+    /* symmetry */
+    .sym-list{display:flex;flex-direction:column;gap:3px}
+    .so{display:flex;align-items:center;gap:5px;cursor:pointer;font-size:.74rem;color:var(--tx);padding:4px 7px;border-radius:5px;border:1px solid transparent;transition:all .12s;user-select:none}
+    .so:has(input:checked){background:rgba(124,58,237,.12);border-color:#9b73e8;color:#6d28d9;font-weight:700}
+    html.dark .so:has(input:checked){background:rgba(124,58,237,.18);border-color:#7c5cbf;color:#c4b5fd}
+    .so input[type=radio]{accent-color:#7c3aed;width:12px;height:12px;cursor:pointer;flex-shrink:0}
+    .sbadge{font-size:.63rem;padding:1px 5px;border-radius:10px;background:var(--bd);color:var(--ts);margin-left:auto;white-space:nowrap}
+    .so:has(input:checked) .sbadge{background:#c4b5fd;color:#4c1d95}
+
+    /* knot counter */
+    .kl{display:flex;flex-direction:column;gap:3px;max-height:100px;overflow-y:auto}
+    .ki{display:flex;align-items:center;gap:6px;font-size:.7rem;color:var(--tx)}
+    .ksw{width:13px;height:13px;border-radius:3px;border:1px solid rgba(128,128,128,.3);flex-shrink:0}
+    .kct{margin-left:auto;font-weight:700;color:var(--ts);font-size:.7rem}
+
+    /* save list */
+    .save-list{display:flex;flex-direction:column;gap:3px;max-height:85px;overflow-y:auto}
+    .save-item{display:flex;align-items:center;gap:4px;padding:3px 7px;border-radius:5px;border:1px solid var(--bd);cursor:pointer;font-size:.72rem;color:var(--tx);background:var(--inp-bg);transition:border-color .12s}
+    .save-item:hover{border-color:var(--ac)}
+    .si-del{margin-left:auto;background:none!important;border:none!important;color:#e05555;cursor:pointer;padding:0 2px;font-size:.8rem;font-weight:700;line-height:1;transform:none!important}
+
+    /* user row */
+    .ur{display:flex;align-items:center;gap:5px;font-size:.71rem;color:var(--ts)}
+    .un{font-weight:700;color:var(--ac);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .ur button{padding:2px 6px;font-size:.66rem;margin-left:auto;font-weight:400;background:#2c3e50}
+
+    /* swatches */
+    .swatch-row{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+    .swatch{width:17px;height:17px;border-radius:3px;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:border-color .1s,transform .1s}
+    .swatch:hover{transform:scale(1.2);border-color:rgba(255,255,255,.6)!important}
+
+    /* opacity row */
+    .op-row{display:flex;align-items:center;gap:6px}
+    .op-row span{font-size:.68rem;color:var(--ts);white-space:nowrap}
+
+    /* ── MAIN CANVAS AREA ─────────────────────── */
+    #main{flex-grow:1;display:flex;overflow:auto;padding:20px}
+
+    /* grid outer wrapper (labels + grid) */
+    #gOuter{display:inline-flex;flex-direction:column;margin:auto}
+    #gHeader{display:flex}
+    #gBody{display:flex}
+    .num-lbl{display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--lbl);flex-shrink:0;overflow:hidden;font-family:monospace;font-weight:500}
+
+    /* canvas wrap */
+    #cWrap{position:relative;background:#fff;border-radius:11px;box-shadow:0 14px 32px var(--shadow);display:inline-block;overflow:hidden}
+
+    /* the grid */
+    #grid{display:grid;position:relative;z-index:1;border:2px solid #aaa;user-select:none;touch-action:none;background:transparent}
+    .gc{border-right:1px solid #ddd;border-bottom:1px solid #ddd;cursor:crosshair;background:transparent}
+    .gc[data-y="0"]{border-top:1px solid #ddd}
+    .gc[data-x="0"]{border-left:1px solid #ddd}
+    .gc.gr{border-right:2.5px solid #aaa!important}
+    .gc.gb{border-bottom:2.5px solid #aaa!important}
+    .gc.preview{outline:1px dashed rgba(50,50,50,.55);background:rgba(179,45,46,.28)!important}
+
+    /* ── LOGIN SCREEN ─────────────────────────── */
+    #loginScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
+      font-family:'Segoe UI',system-ui,sans-serif;background:#160707;overflow:hidden}
+    .lg-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;
+      animation:lgFade 27s infinite;will-change:opacity}
+    .lg-bg:nth-child(1){animation-delay:0s}
+    .lg-bg:nth-child(2){animation-delay:9s}
+    .lg-bg:nth-child(3){animation-delay:18s}
+    @keyframes lgFade{0%{opacity:0;transform:scale(1.08)}7%{opacity:1}30%{opacity:1}37%{opacity:0}
+      100%{opacity:0;transform:scale(1)}}
+    .lg-overlay{position:absolute;inset:0;background:
+        radial-gradient(circle at 50% 38%,rgba(25,6,6,.42),rgba(10,3,3,.9)),
+        repeating-linear-gradient(45deg,rgba(0,0,0,.06) 0 16px,rgba(255,255,255,.018) 16px 32px)}
+    .lg-card{position:relative;z-index:2;width:min(390px,92vw);background:rgba(22,12,14,.74);
+      backdrop-filter:blur(20px) saturate(1.25);border:1px solid rgba(212,172,13,.38);
+      border-radius:18px;padding:34px 30px 26px;color:#f3e9d2;
+      box-shadow:0 26px 75px rgba(0,0,0,.62),0 0 0 6px rgba(212,172,13,.05);animation:cardIn .6s ease}
+    @keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+    .lg-card::before{content:'';position:absolute;inset:8px;border:1px solid rgba(212,172,13,.2);
+      border-radius:12px;pointer-events:none}
+    .lg-logo{text-align:center;margin-bottom:2px}
+    .lg-logo .orn{color:#b32d2e;font-size:1rem;letter-spacing:7px;margin-bottom:2px}
+    .lg-logo h1{font-size:2.15rem;margin:0;color:#e7c558;letter-spacing:1px;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+    .lg-sub{text-align:center;font-size:.72rem;color:#cab488;margin:4px 0 20px;line-height:1.5}
+    .lg-tabs{display:flex;gap:6px;margin-bottom:18px;background:rgba(0,0,0,.32);padding:4px;border-radius:11px}
+    .lg-tab{flex:1;text-align:center;padding:9px;border-radius:8px;cursor:pointer;font-size:.8rem;
+      font-weight:600;color:#cab488;transition:all .15s;user-select:none}
+    .lg-tab.on{background:linear-gradient(135deg,#b32d2e,#7c1d1d);color:#fff;box-shadow:0 3px 11px rgba(0,0,0,.45)}
+    .lg-field{margin-bottom:13px}
+    .lg-field label{display:block;font-size:.66rem;color:#cab488;margin-bottom:5px;letter-spacing:.4px}
+    .lg-inp{width:100%;padding:11px 13px;border-radius:9px;border:1px solid rgba(212,172,13,.3);
+      background:rgba(0,0,0,.34);color:#f3e9d2;font-size:.9rem;outline:none;transition:border-color .15s,box-shadow .15s}
+    .lg-inp::placeholder{color:#7d6e52}
+    .lg-inp:focus{border-color:#e7c558;box-shadow:0 0 0 3px rgba(231,197,88,.13)}
+    .lg-btn{width:100%;margin-top:6px;padding:12px;border:none;border-radius:10px;cursor:pointer;
+      font-size:.95rem;font-weight:700;color:#fff;background:linear-gradient(135deg,#c0392b,#8b1e1e);
+      box-shadow:0 6px 18px rgba(140,20,20,.45);transition:filter .15s,transform .08s;letter-spacing:.5px}
+    .lg-btn:hover{filter:brightness(1.13)}.lg-btn:active{transform:scale(.98)}
+    .lg-err{min-height:15px;font-size:.72rem;color:#ff9090;text-align:center;margin-top:10px}
+    .lg-foot{text-align:center;font-size:.64rem;color:#9c8a66;margin-top:14px;line-height:1.5}
+
+    /* checkbox label in sidebar */
+    .chk{font-size:.66rem;color:var(--ts);display:flex;align-items:center;gap:5px;cursor:pointer}
+    .chk input{accent-color:var(--ac);cursor:pointer}
+  </style>
+  <!-- Supabase client — cross-device accounts + cloud storage -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN SCREEN ══════════════ -->
+<div id="loginScreen">
+  <div class="lg-bg" style="background-image:url('https://images.unsplash.com/photo-1583850384879-130cb0460481?q=80&w=1920&auto=format&fit=crop')"></div>
+  <div class="lg-bg" style="background-image:url('https://images.unsplash.com/photo-1600166898405-da9535204843?q=80&w=1920&auto=format&fit=crop')"></div>
+  <div class="lg-bg" style="background-image:url('https://images.unsplash.com/photo-1604147495798-57beb5d6af73?q=80&w=1920&auto=format&fit=crop')"></div>
+  <div class="lg-overlay"></div>
+
+  <div class="lg-card">
+    <div class="lg-logo">
+      <div class="orn">✦ ❖ ✦</div>
+      <h1>Çeşni</h1>
+    </div>
+    <div class="lg-sub">Azərbaycan Xalça Dizayn Studiyası<br>Interactive Carpet Designer</div>
+
+    <div class="lg-tabs">
+      <div class="lg-tab on" data-tab="login">Daxil ol · Login</div>
+      <div class="lg-tab" data-tab="signup">Qeydiyyat · Sign Up</div>
+    </div>
+
+    <form id="authForm" autocomplete="off">
+      <div class="lg-field" id="fldName" style="display:none">
+        <label>Weaver name · Ad</label>
+        <input class="lg-inp" id="authName" type="text" placeholder="e.g. Leyla" autocomplete="nickname">
+      </div>
+      <div class="lg-field">
+        <label>Email</label>
+        <input class="lg-inp" id="authEmail" type="email" placeholder="you@example.com" autocomplete="username">
+      </div>
+      <div class="lg-field">
+        <label>Password · Şifrə</label>
+        <input class="lg-inp" id="authPass" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="lg-btn" type="submit" id="authBtn">Daxil ol →</button>
+      <div class="lg-err" id="authErr"></div>
+    </form>
+
+    <div class="lg-foot">🧵 Your designs save automatically to your account.</div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<div id="sb">
+
+  <!-- Header -->
+  <div class="sb-head">
+    <div><h1>Çeşni Designer</h1><p>Smart Symmetry · Point Paper</p></div>
+    <button class="dkbtn" id="btnDark">🌙</button>
+  </div>
+
+  <!-- User / Account -->
+  <div class="cg">
+    <div class="ur">👤&nbsp;<span class="un" id="uname">—</span>
+      <button id="btnChgUser">Logout</button>
+    </div>
+  </div>
+
+  <!-- Zoom -->
+  <div class="cg">
+    <div class="cg-t">🔍 Zoom</div>
+    <input type="range" id="zoomSlider" min="5" max="40" value="20">
+    <span class="zm-r" id="zoomRead">Normal (20px)</span>
+  </div>
+
+  <!-- Canvas size -->
+  <div class="cg">
+    <div class="cg-t">📐 Canvas Size (Knots)</div>
+    <div class="dim-row">
+      <div class="dc"><span class="dl">Width</span><input type="number" id="gW" value="30" min="10" max="150"></div>
+      <span style="color:var(--ts);margin-top:10px;font-size:.9rem">×</span>
+      <div class="dc"><span class="dl">Length</span><input type="number" id="gH" value="40" min="10" max="150"></div>
+      <span id="dimPrev" style="font-size:.66rem;color:var(--ts);margin-top:10px;white-space:nowrap">30×40</span>
+    </div>
+    <button id="btnUpdate" class="g" style="margin-top:2px">Generate Grid</button>
+    <div class="presets">
+      <button class="preset" data-w="30" data-h="40">Quick<br><b>30×40</b></button>
+      <button class="preset" data-w="60" data-h="80">Detailed<br><b>60×80</b></button>
+      <button class="preset" data-w="100" data-h="140">Fine<br><b>100×140</b></button>
+    </div>
+  </div>
+
+  <!-- Drawing tools -->
+  <div class="cg">
+    <div class="cg-t">🛠 Drawing Tools</div>
+    <div class="tools">
+      <button class="on" data-tool="draw">✏️<br>Draw</button>
+      <button data-tool="erase">⌫<br>Erase</button>
+      <button data-tool="fill">🪣<br>Fill</button>
+      <button data-tool="line">╱<br>Line</button>
+      <button data-tool="rect">▭<br>Rect</button>
+    </div>
+    <div class="row2" style="margin-top:4px">
+      <button id="btnUndo" class="b" disabled>↩ Undo</button>
+      <button id="btnRedo" class="tl" disabled>↪ Redo</button>
+    </div>
+  </div>
+
+  <!-- Color -->
+  <div class="cg">
+    <div class="cg-t">🎨 Yarn Color</div>
+    <input type="color" id="colorPicker" value="#b32d2e">
+    <div class="swatch-row" id="swatches"></div>
+  </div>
+
+  <!-- Symmetry -->
+  <div class="cg">
+    <div class="cg-t">↔ Symmetry Mode</div>
+    <div class="sym-list">
+      <label class="so"><input type="radio" name="sym" value="none"> None <span class="sbadge">free</span></label>
+      <label class="so"><input type="radio" name="sym" value="2h"> Left ↔ Right <span class="sbadge">2-way</span></label>
+      <label class="so"><input type="radio" name="sym" value="2v"> Top ↔ Bottom <span class="sbadge">2-way</span></label>
+      <label class="so"><input type="radio" name="sym" value="4way" checked> 4-Way Full <span class="sbadge">full</span></label>
+    </div>
+  </div>
+
+  <!-- Reference image -->
+  <div class="cg">
+    <div class="cg-t">🖼 Reference Image</div>
+    <input type="file" id="refInput" accept="image/*">
+    <div class="op-row">
+      <span>Opacity:</span>
+      <input type="range" id="refOp" min="0" max="100" value="40" style="flex:1">
+      <span id="refOpVal">40%</span>
+    </div>
+    <button id="btnClrRef" class="r" style="font-size:.7rem;padding:4px">✕ Remove Image</button>
+    <p style="font-size:.64rem;color:var(--ts);margin:5px 0 0;line-height:1.4">Upload a picture to show it faintly behind the grid, then trace your design over it by hand. Use <b>Opacity</b> to fade it in or out.</p>
+  </div>
+
+  <!-- Knot counter -->
+  <div class="cg">
+    <div class="cg-t">🔢 Knot Counter <span id="totKnots" style="margin-left:auto;font-size:.66rem;font-weight:400;color:var(--ts)"></span></div>
+    <div class="kl" id="knotList"><em style="font-size:.68rem;color:var(--ts)">No knots yet</em></div>
+  </div>
+
+  <!-- Save / Load -->
+  <div class="cg">
+    <div class="cg-t">💾 My Designs</div>
+    <div class="save-list" id="saveList"></div>
+    <div class="row2" style="margin-top:4px">
+      <button id="btnSave" class="b">💾 Save</button>
+      <button id="btnLoad" class="tl">📂 Load</button>
+    </div>
+  </div>
+
+  <button id="btnClear" class="r">🗑 Clear Grid</button>
+  <button id="btnExport" class="p">💾 Export as PNG</button>
+
+</div><!-- #sb -->
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div id="main">
+  <div id="gOuter">
+    <div id="gHeader">
+      <div id="lCorner"></div>
+      <div id="colLbls" style="display:flex"></div>
+    </div>
+    <div id="gBody">
+      <div id="rowLbls" style="display:flex;flex-direction:column"></div>
+      <div id="cWrap">
+        <div id="grid" draggable="false"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<script>
+// ════════════════════════════════════════════════
+//  ELEMENT REFERENCES
+// ════════════════════════════════════════════════
+const G         = document.getElementById('grid');
+const cPick     = document.getElementById('colorPicker');
+const btnUpdate = document.getElementById('btnUpdate');
+const inW       = document.getElementById('gW');
+const inH       = document.getElementById('gH');
+const dimPrev   = document.getElementById('dimPrev');
+const btnExport = document.getElementById('btnExport');
+const zSlider   = document.getElementById('zoomSlider');
+const zRead     = document.getElementById('zoomRead');
+const btnClear  = document.getElementById('btnClear');
+const btnUndo   = document.getElementById('btnUndo');
+const btnRedo   = document.getElementById('btnRedo');
+const btnDark   = document.getElementById('btnDark');
+const knotList  = document.getElementById('knotList');
+const totKnots  = document.getElementById('totKnots');
+const saveList  = document.getElementById('saveList');
+const btnSave   = document.getElementById('btnSave');
+const btnLoad   = document.getElementById('btnLoad');
+const swatches  = document.getElementById('swatches');
+const refInput  = document.getElementById('refInput');
+const refOp     = document.getElementById('refOp');
+const refOpVal  = document.getElementById('refOpVal');
+const btnClrRef = document.getElementById('btnClrRef');
+const colLbls   = document.getElementById('colLbls');
+const rowLbls   = document.getElementById('rowLbls');
+const lCorner   = document.getElementById('lCorner');
+const unameEl   = document.getElementById('uname');
+const btnChgUser= document.getElementById('btnChgUser');
+const LW=28, LH=15; // label width / height px
+
+// ════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════
+let gW=30, gH=40;
+let drawing=false, tool='draw';
+let tx=null, ty=null;       // shape tool start
+let prevCells=[];            // preview-highlighted cells
+let cellMap   = new Map();   // "x,y" → <div>
+let cellColors= new Map();   // "x,y" → hex color string
+let colorCounts= new Map();  // hex → count
+let swColors  = [];          // recently-used color palette
+let refSrc    = null;        // reference image data-url
+let hist=[], hIdx=-1, stroke=null; // undo/redo
+let userName  = '';          // display name (weaver name) of the logged-in user
+let currentUser = null;      // Supabase auth user object
+let supa = null;             // Supabase client instance
+let darkMode  = localStorage.getItem('cesni_dark') === '1';
+
+// ════════════════════════════════════════════════
+//  ⚙ SUPABASE SETUP  —  PASTE YOUR PROJECT VALUES BELOW
+//  Get them from: Supabase dashboard → Project Settings →
+//  Data API  (Project URL)  and  API Keys (anon / public key).
+// ════════════════════════════════════════════════
+const SUPABASE_URL      = 'https://metantdzmvmmnncekwvs.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_BaF0JY8gpV_nhZ0WYcDzxQ_up_uHFVq';
+
+// ════════════════════════════════════════════════
+//  BOOT
+// ════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', async () => {
+  applyDark();
+  setupAuth();
+  if (!window.supabase || SUPABASE_URL.includes('YOUR_PROJECT_REF')) {
+    showLogin();
+    document.getElementById('authErr').textContent =
+      '⚙ Supabase not configured yet — paste your URL & key at the top of the <script>.';
+    return;
+  }
+  supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const { data: { session } } = await supa.auth.getSession();
+  if (session) startApp(session.user);
+  else showLogin();
+});
+
+// ════════════════════════════════════════════════
+//  DARK MODE
+// ════════════════════════════════════════════════
+function applyDark() {
+  document.documentElement.classList.toggle('dark', darkMode);
+  btnDark.textContent = darkMode ? '☀️' : '🌙';
+  localStorage.setItem('cesni_dark', darkMode ? '1' : '0');
+}
+btnDark.addEventListener('click', () => { darkMode = !darkMode; applyDark(); });
+
+// ════════════════════════════════════════════════
+//  ACCOUNTS / LOGIN  (Supabase email + password auth)
+// ════════════════════════════════════════════════
+let authMode = 'login';
+
+function setupAuth() {
+  const tabs    = document.querySelectorAll('.lg-tab');
+  const btn     = document.getElementById('authBtn');
+  const err     = document.getElementById('authErr');
+  const fldName = document.getElementById('fldName');
+
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('on')); t.classList.add('on');
+    authMode = t.dataset.tab;
+    btn.textContent = authMode === 'login' ? 'Daxil ol →' : 'Qeydiyyat →';
+    fldName.style.display = authMode === 'signup' ? 'block' : 'none';
+    err.textContent = '';
+  }));
+
+  document.getElementById('authForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!supa) { err.textContent = '⚙ Supabase not configured yet — see SETUP at the top of the <script>.'; return; }
+    const email = document.getElementById('authEmail').value.trim();
+    const pass  = document.getElementById('authPass').value;
+    const name  = document.getElementById('authName').value.trim();
+    if (!email || !pass) { err.textContent = 'Please enter your email and password.'; return; }
+    if (pass.length < 6)  { err.textContent = 'Password must be at least 6 characters.'; return; }
+    btn.disabled = true; err.textContent = '…';
+
+    try {
+      if (authMode === 'signup') {
+        const { data, error } = await supa.auth.signUp({
+          email, password: pass,
+          options: { data: { weaver_name: name || email.split('@')[0] } }
+        });
+        if (error) { err.textContent = error.message; return; }
+        if (!data.session) {   // email-confirmation is on → no session yet
+          err.textContent = '✓ Account created! Check your inbox to confirm, then log in.';
+          document.querySelector('.lg-tab[data-tab="login"]').click();
+          return;
+        }
+        startApp(data.user);
+      } else {
+        const { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
+        if (error) { err.textContent = error.message; return; }
+        startApp(data.user);
+      }
+    } catch (ex) {
+      err.textContent = 'Connection failed: ' + (ex && ex.message ? ex.message : ex) +
+        ' — check your Project URL and internet connection.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+}
+
+function showLogin() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+async function startApp(user) {
+  currentUser = user;
+  userName = (user.user_metadata && user.user_metadata.weaver_name) || user.email || 'Weaver';
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  unameEl.textContent = userName;
+  await loadSaveList();
+  await restoreAutosave();
+}
+
+btnChgUser.addEventListener('click', async () => {
+  if (confirm('Log out? Your work is saved to your account in the cloud.')) {
+    await supa.auth.signOut();
+    location.reload();
+  }
+});
+
+// ════════════════════════════════════════════════
+//  ZOOM
+// ════════════════════════════════════════════════
+const cpx = () => +zSlider.value;
+
+function applySize() {
+  const px = cpx() + 'px';
+  G.style.gridTemplateColumns = `repeat(${gW},${px})`;
+  G.style.gridTemplateRows    = `repeat(${gH},${px})`;
+  buildLabels();
+}
+
+zSlider.addEventListener('input', () => {
+  const v = cpx();
+  applySize();
+  zRead.textContent = v < 15 ? `Zoomed Out (${v}px)` : v > 25 ? `Zoomed In (${v}px)` : `Normal (${v}px)`;
+});
+
+inW.addEventListener('input', () => dimPrev.textContent = `${inW.value}×${inH.value}`);
+inH.addEventListener('input', () => dimPrev.textContent = `${inW.value}×${inH.value}`);
+
+// ════════════════════════════════════════════════
+//  ROW / COLUMN NUMBER LABELS
+// ════════════════════════════════════════════════
+function buildLabels() {
+  const px = cpx();
+  lCorner.style.cssText = `width:${LW}px;height:${LH}px;flex-shrink:0`;
+
+  // Column labels (every 10th)
+  colLbls.innerHTML = '';
+  for (let x = 0; x < gW; x++) {
+    const d = document.createElement('div');
+    d.className = 'num-lbl';
+    d.style.width  = px + 'px';
+    d.style.height = LH + 'px';
+    if ((x + 1) % 10 === 0) d.textContent = x + 1;
+    colLbls.appendChild(d);
+  }
+
+  // Row labels (every 10th)
+  rowLbls.innerHTML = '';
+  for (let y = 0; y < gH; y++) {
+    const d = document.createElement('div');
+    d.className = 'num-lbl';
+    d.style.height = px + 'px';
+    d.style.width  = LW + 'px';
+    d.style.justifyContent = 'flex-end';
+    d.style.paddingRight = '3px';
+    if ((y + 1) % 10 === 0) d.textContent = y + 1;
+    rowLbls.appendChild(d);
+  }
+}
+
+// ════════════════════════════════════════════════
+//  GRID CREATION
+// ════════════════════════════════════════════════
+function createGrid() {
+  gW = Math.min(Math.max(parseInt(inW.value) || 30, 10), 150);
+  gH = Math.min(Math.max(parseInt(inH.value) || 40, 10), 150);
+  inW.value = gW; inH.value = gH;
+  dimPrev.textContent = `${gW}×${gH}`;
+
+  applySize();
+  G.innerHTML = '';
+  cellMap.clear(); cellColors.clear(); colorCounts.clear();
+  hist = []; hIdx = -1; stroke = null;
+
+  const frag = document.createDocumentFragment();
+  for (let y = 0; y < gH; y++) {
+    for (let x = 0; x < gW; x++) {
+      const c = document.createElement('div');
+      c.className = 'gc';
+      c.dataset.x = x; c.dataset.y = y;
+      if ((x + 1) % 10 === 0 && x < gW - 1) c.classList.add('gr');
+      if ((y + 1) % 10 === 0 && y < gH - 1) c.classList.add('gb');
+      frag.appendChild(c);
+      cellMap.set(`${x},${y}`, c);
+    }
+  }
+  G.appendChild(frag);
+  renderKnots(); updUndoBtns();
+}
+btnUpdate.addEventListener('click', () => {
+  if (confirm('Resize? This will clear your current design.')) createGrid();
+});
+
+// Quick canvas-size presets
+document.querySelectorAll('.preset').forEach(b => b.addEventListener('click', () => {
+  const w = +b.dataset.w, h = +b.dataset.h;
+  if (cellColors.size && !confirm(`Resize to ${w}×${h}? This will clear your current design.`)) return;
+  inW.value = w; inH.value = h; dimPrev.textContent = `${w}×${h}`; createGrid();
+}));
+
+// ════════════════════════════════════════════════
+//  CELL HELPERS
+// ════════════════════════════════════════════════
+const gc       = (x, y) => cellMap.get(`${x},${y}`);
+const getColor = (x, y) => cellColors.get(`${x},${y}`) || '';
+
+function setColor(x, y, color) {
+  const key = `${x},${y}`, cell = gc(x, y);
+  if (!cell) return;
+  if (color) {
+    cellColors.set(key, color);
+    cell.style.backgroundColor = color;
+    cell.style.borderColor      = color;
+  } else {
+    cellColors.delete(key);
+    cell.style.removeProperty('background-color');
+    cell.style.removeProperty('border-color');
+  }
+}
+
+// ════════════════════════════════════════════════
+//  UNDO / REDO  (delta-based, up to 100 steps)
+// ════════════════════════════════════════════════
+function beginStroke() { stroke = new Map(); }
+
+function rec(x, y, oldC, newC) {
+  if (!stroke) return;
+  const k = `${x},${y}`;
+  if (!stroke.has(k)) stroke.set(k, { o: oldC, n: newC });
+  else stroke.get(k).n = newC;
+}
+
+function endStroke() {
+  if (!stroke || !stroke.size) { stroke = null; return; }
+  hist = hist.slice(0, hIdx + 1);
+  hist.push(stroke);
+  if (hist.length > 100) hist.shift();
+  hIdx = hist.length - 1;
+  stroke = null; updUndoBtns();
+}
+
+function undo() {
+  if (hIdx < 0) return;
+  hist[hIdx].forEach(({ o }, k) => {
+    const [x, y] = k.split(',').map(Number);
+    setColor(x, y, o);
+  });
+  hIdx--; recount(); updUndoBtns();
+}
+
+function redo() {
+  if (hIdx >= hist.length - 1) return;
+  hIdx++;
+  hist[hIdx].forEach(({ n }, k) => {
+    const [x, y] = k.split(',').map(Number);
+    setColor(x, y, n);
+  });
+  recount(); updUndoBtns();
+}
+
+function updUndoBtns() {
+  btnUndo.disabled = hIdx < 0;
+  btnRedo.disabled = hIdx >= hist.length - 1;
+}
+
+btnUndo.addEventListener('click', undo);
+btnRedo.addEventListener('click', redo);
+document.addEventListener('keydown', e => {
+  if (!(e.ctrlKey || e.metaKey) || e.altKey) return;
+  if (e.key === 'z') { e.preventDefault(); undo(); }
+  if (e.key === 'y' || (e.shiftKey && e.key === 'Z')) { e.preventDefault(); redo(); }
+});
+
+// ════════════════════════════════════════════════
+//  PAINT (single cell, incremental count update)
+// ════════════════════════════════════════════════
+function paint(x, y, color) {
+  const old = getColor(x, y);
+  if (old === color) return;
+  rec(x, y, old, color);
+  // update counts
+  if (old) { const c=(colorCounts.get(old)||0)-1; if(c<=0) colorCounts.delete(old); else colorCounts.set(old,c); }
+  if (color) colorCounts.set(color, (colorCounts.get(color)||0) + 1);
+  setColor(x, y, color);
+}
+
+// Apply paint with active symmetry mode
+function sym() { return document.querySelector('input[name="sym"]:checked').value; }
+
+function paintSym(x, y, color) {
+  const s = sym(), mx = gW-1-x, my = gH-1-y;
+  paint(x, y, color);
+  if (s==='2h')   paint(mx, y, color);
+  if (s==='2v')   paint(x, my, color);
+  if (s==='4way') { paint(mx,y,color); paint(x,my,color); paint(mx,my,color); }
+}
+
+// ════════════════════════════════════════════════
+//  FLOOD FILL (BFS, symmetry-aware)
+// ════════════════════════════════════════════════
+function floodFill(sx, sy, fillColor) {
+  const s = sym();
+  const starts = [[sx,sy]];
+  if (s==='2h')   starts.push([gW-1-sx, sy]);
+  if (s==='2v')   starts.push([sx, gH-1-sy]);
+  if (s==='4way') starts.push([gW-1-sx,sy],[sx,gH-1-sy],[gW-1-sx,gH-1-sy]);
+
+  beginStroke();
+  starts.forEach(([ox,oy]) => {
+    const tgt = getColor(ox, oy);
+    if (tgt === fillColor) return;
+    const q = [[ox,oy]], vis = new Set();
+    while (q.length) {
+      const [x,y] = q.shift(), k=`${x},${y}`;
+      if (vis.has(k)||x<0||x>=gW||y<0||y>=gH||getColor(x,y)!==tgt) continue;
+      vis.add(k); paint(x, y, fillColor);
+      q.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
+    }
+  });
+  endStroke(); renderKnots(); addSwatch(fillColor);
+}
+
+// ════════════════════════════════════════════════
+//  LINE (Bresenham's) & RECTANGLE
+// ════════════════════════════════════════════════
+function linePts(x0,y0,x1,y1) {
+  const pts=[]; let dx=Math.abs(x1-x0),dy=Math.abs(y1-y0),sx=x0<x1?1:-1,sy=y0<y1?1:-1,err=dx-dy;
+  for(;;){ pts.push([x0,y0]); if(x0===x1&&y0===y1) break; let e2=2*err; if(e2>-dy){err-=dy;x0+=sx;} if(e2<dx){err+=dx;y0+=sy;} }
+  return pts;
+}
+
+function rectPts(x0,y0,x1,y1) {
+  const pts=[],mnX=Math.min(x0,x1),mxX=Math.max(x0,x1),mnY=Math.min(y0,y1),mxY=Math.max(y0,y1);
+  for(let x=mnX;x<=mxX;x++){pts.push([x,mnY]);if(mnY!==mxY)pts.push([x,mxY]);}
+  for(let y=mnY+1;y<mxY;y++){pts.push([mnX,y]);if(mnX!==mxX)pts.push([mxX,y]);}
+  return pts;
+}
+
+// Expand pts with symmetric mirrors for preview
+function symPts(pts) {
+  const s=sym(), all=[...pts];
+  pts.forEach(([x,y]) => {
+    if(s==='2h')   all.push([gW-1-x,y]);
+    if(s==='2v')   all.push([x,gH-1-y]);
+    if(s==='4way') all.push([gW-1-x,y],[x,gH-1-y],[gW-1-x,gH-1-y]);
+  });
+  return all;
+}
+
+function clrPrev() { prevCells.forEach(c=>c.classList.remove('preview')); prevCells=[]; }
+
+function showPrev(pts) {
+  clrPrev();
+  symPts(pts).forEach(([x,y]) => {
+    const c=gc(x,y);
+    if(c){ c.classList.add('preview'); prevCells.push(c); }
+  });
+}
+
+function commitShape(pts, color) {
+  clrPrev(); beginStroke();
+  pts.forEach(([x,y]) => paintSym(x, y, color));
+  endStroke(); renderKnots();
+  if (color) addSwatch(color);
+}
+
+// ════════════════════════════════════════════════
+//  INTERACTION  (mouse + touch unified)
+// ════════════════════════════════════════════════
+const fromEv  = e => e.touches ? [e.touches[0].clientX, e.touches[0].clientY] : [e.clientX, e.clientY];
+const fromEnd = e => e.changedTouches ? [e.changedTouches[0].clientX, e.changedTouches[0].clientY] : [e.clientX, e.clientY];
+const cellAt  = (cx,cy) => { const t=document.elementFromPoint(cx,cy); return t?.classList.contains('gc')?t:null; };
+
+G.addEventListener('mousedown', onDown);
+G.addEventListener('mousemove', onMove);
+window.addEventListener('mouseup', onUp);
+G.addEventListener('touchstart', onDown, {passive:false});
+G.addEventListener('touchmove',  onMove, {passive:false});
+window.addEventListener('touchend', onUp);
+
+function onDown(e) {
+  drawing = true;
+  const [cx,cy] = fromEv(e), t = cellAt(cx,cy); if(!t) return;
+  const x=+t.dataset.x, y=+t.dataset.y;
+  const color = tool==='erase' ? '' : cPick.value;
+
+  if (tool==='fill') { floodFill(x, y, color); drawing=false; return; }
+  if (tool==='line'||tool==='rect') { tx=x; ty=y; showPrev([[x,y]]); return; }
+  beginStroke(); paintSym(x, y, color);
+}
+
+function onMove(e) {
+  if (!drawing) return;
+  if (e.type==='touchmove') e.preventDefault();
+  const [cx,cy]=fromEv(e), t=cellAt(cx,cy); if(!t) return;
+  const x=+t.dataset.x, y=+t.dataset.y;
+  const color = tool==='erase' ? '' : cPick.value;
+  if (tool==='line') { showPrev(linePts(tx,ty,x,y)); return; }
+  if (tool==='rect') { showPrev(rectPts(tx,ty,x,y)); return; }
+  paintSym(x, y, color);
+}
+
+function onUp(e) {
+  if (!drawing) { drawing=false; return; }
+  drawing = false;
+  if (tool==='line'||tool==='rect') {
+    const [cx,cy]=fromEnd(e), t=cellAt(cx,cy);
+    const x=t?+t.dataset.x:tx, y=t?+t.dataset.y:ty;
+    const pts = tool==='line' ? linePts(tx,ty,x,y) : rectPts(tx,ty,x,y);
+    commitShape(pts, tool==='erase' ? '' : cPick.value);
+    tx=ty=null; return;
+  }
+  if (tool==='draw'||tool==='erase') {
+    endStroke(); renderKnots();
+    if (tool==='draw') addSwatch(cPick.value);
+  }
+}
+
+// Tool button switcher
+document.querySelectorAll('.tools button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tools button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on'); tool = btn.dataset.tool;
+    G.style.cursor = tool==='fill'?'cell' : tool==='erase'?'not-allowed' : 'crosshair';
+  });
+});
+
+// ════════════════════════════════════════════════
+//  COLOR SWATCHES (recently used)
+// ════════════════════════════════════════════════
+function addSwatch(c) {
+  if (!c) return;
+  swColors = [c, ...swColors.filter(x=>x!==c)].slice(0, 16);
+  renderSwatches();
+}
+
+function renderSwatches() {
+  swatches.innerHTML = '';
+  swColors.forEach(c => {
+    const s = document.createElement('div');
+    s.className = 'swatch'; s.style.background = c; s.title = c;
+    s.addEventListener('click', () => { cPick.value = c; });
+    swatches.appendChild(s);
+  });
+}
+
+// ════════════════════════════════════════════════
+//  REFERENCE IMAGE  (drawn behind grid via CSS bg)
+// ════════════════════════════════════════════════
+refInput.addEventListener('change', e => {
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => { refSrc = ev.target.result; applyRef(); };
+  r.readAsDataURL(f);
+});
+refOp.addEventListener('input', () => { refOpVal.textContent = refOp.value+'%'; applyRef(); });
+function applyRef() {
+  if (!refSrc) { G.style.backgroundImage=''; return; }
+  const w = 1 - refOp.value/100;
+  G.style.backgroundImage = `linear-gradient(rgba(255,255,255,${w}),rgba(255,255,255,${w})),url('${refSrc}')`;
+  G.style.backgroundSize = 'cover'; G.style.backgroundPosition = 'center';
+}
+btnClrRef.addEventListener('click', () => { refSrc=null; G.style.backgroundImage=''; refInput.value=''; });
+
+// ════════════════════════════════════════════════
+//  CLOUD STORAGE HELPERS  (Supabase "designs" table)
+// ════════════════════════════════════════════════
+const AUTOSAVE = '__autosave__';     // reserved name for the auto-saved working copy
+let suppressAutosave = false;        // true while loading a design from the cloud
+
+function snapshot() {
+  const cells = [];
+  cellColors.forEach((c, k) => { const [x, y] = k.split(',').map(Number); cells.push({ x, y, c }); });
+  return { gW, gH, cells };
+}
+
+function applySnapshot(d) {
+  suppressAutosave = true;
+  inW.value = d.gW; inH.value = d.gH; createGrid();
+  d.cells.forEach(({ x, y, c }) => setColor(x, y, c));
+  recount();
+  suppressAutosave = false;
+}
+
+function dbUpsert(name, payload) {
+  if (!supa || !currentUser) return Promise.resolve({});
+  return supa.from('designs').upsert(
+    { user_id: currentUser.id, name, payload, updated_at: new Date().toISOString() },
+    { onConflict: 'user_id,name' }
+  );
+}
+
+// ── AUTOSAVE: debounced cloud upsert, restored on next login ──
+let autosaveTimer = null;
+function autosave() {
+  if (!currentUser || suppressAutosave) return;
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => dbUpsert(AUTOSAVE, snapshot()), 700);
+}
+
+async function restoreAutosave() {
+  try {
+    const { data } = await supa.from('designs')
+      .select('payload').eq('user_id', currentUser.id).eq('name', AUTOSAVE).maybeSingle();
+    if (data && data.payload) applySnapshot(data.payload);
+    else createGrid();
+  } catch (e) { createGrid(); }
+}
+
+// ════════════════════════════════════════════════
+//  KNOT COUNTER
+// ════════════════════════════════════════════════
+function recount() {
+  colorCounts.clear();
+  cellColors.forEach(c => { if(c) colorCounts.set(c,(colorCounts.get(c)||0)+1); });
+  renderKnots();
+}
+
+function renderKnots() {
+  let total = 0; colorCounts.forEach(v => total += v);
+  totKnots.textContent = total ? `${total.toLocaleString()} total` : '';
+  if (!colorCounts.size) { knotList.innerHTML='<em style="font-size:.68rem;color:var(--ts)">No knots yet</em>'; return; }
+  const entries = [...colorCounts.entries()].filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  knotList.innerHTML = '';
+  entries.forEach(([c,n]) => {
+    const d = document.createElement('div'); d.className='ki';
+    d.innerHTML = `<div class="ksw" style="background:${c}"></div>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70px;flex:1">${c.toUpperCase()}</span>
+      <span class="kct">${n.toLocaleString()}</span>`;
+    knotList.appendChild(d);
+  });
+  autosave();
+}
+
+// ════════════════════════════════════════════════
+//  SAVE / LOAD  (named designs stored in the cloud)
+// ════════════════════════════════════════════════
+async function loadSaveList() {
+  if (!currentUser) return;
+  saveList.innerHTML = '<em style="font-size:.68rem;color:var(--ts)">Loading…</em>';
+  const { data, error } = await supa.from('designs')
+    .select('name').eq('user_id', currentUser.id).neq('name', AUTOSAVE)
+    .order('updated_at', { ascending: false });
+  if (error) { saveList.innerHTML = '<em style="font-size:.68rem;color:#e05555">Could not load designs</em>'; return; }
+  saveList.innerHTML = '';
+  if (!data.length) { saveList.innerHTML = '<em style="font-size:.68rem;color:var(--ts)">No saved designs yet</em>'; return; }
+  data.forEach(({ name }) => {
+    const row = document.createElement('div'); row.className = 'save-item';
+    row.innerHTML = `<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1">${name}</span>
+      <button class="si-del" title="Delete">✕</button>`;
+    row.querySelector('.si-del').addEventListener('click', async e => {
+      e.stopPropagation();
+      if (confirm(`Delete "${name}"?`)) {
+        await supa.from('designs').delete().eq('user_id', currentUser.id).eq('name', name);
+        loadSaveList();
+      }
+    });
+    row.addEventListener('click', () => loadDesign(name));
+    saveList.appendChild(row);
+  });
+}
+
+btnSave.addEventListener('click', async () => {
+  const name = prompt('Save design as:', `design-${new Date().toLocaleDateString('az').replace(/\./g, '-')}`);
+  if (!name) return;
+  if (name.trim() === AUTOSAVE) { alert('That name is reserved — pick another.'); return; }
+  const orig = btnSave.textContent; btnSave.textContent = '…';
+  const { error } = await dbUpsert(name.trim(), snapshot());
+  btnSave.textContent = error ? '✕ Error' : '✓ Saved!';
+  if (!error) loadSaveList();
+  setTimeout(() => btnSave.textContent = orig, 1600);
+});
+
+btnLoad.addEventListener('click', async () => {
+  const { data } = await supa.from('designs')
+    .select('name').eq('user_id', currentUser.id).neq('name', AUTOSAVE)
+    .order('updated_at', { ascending: false });
+  if (!data || !data.length) { alert('No saved designs yet. Draw something and save first!'); return; }
+  const name = prompt('Enter design name to load:\n\n' + data.map(d => d.name).join('\n'));
+  if (name) loadDesign(name.trim());
+});
+
+async function loadDesign(name) {
+  const { data, error } = await supa.from('designs')
+    .select('payload').eq('user_id', currentUser.id).eq('name', name).maybeSingle();
+  if (error || !data) { alert(`Design "${name}" not found.`); return; }
+  applySnapshot(data.payload);
+  dbUpsert(AUTOSAVE, data.payload);   // make the loaded design the current working copy
+}
+
+// ════════════════════════════════════════════════
+//  CLEAR, STAR, EXPORT
+// ════════════════════════════════════════════════
+btnClear.addEventListener('click', () => {
+  if (!confirm('Clear the entire design?')) return;
+  beginStroke();
+  [...cellColors.entries()].forEach(([k,c])=>{
+    const [x,y]=k.split(',').map(Number); rec(x,y,c,''); setColor(x,y,'');
+  });
+  colorCounts.clear(); endStroke(); renderKnots();
+});
+
+
+btnExport.addEventListener('click', () => {
+  const s=20, cvs=document.createElement('canvas');
+  cvs.width=gW*s; cvs.height=gH*s;
+  const ctx=cvs.getContext('2d');
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,cvs.width,cvs.height);
+  cellMap.forEach((cell,key)=>{
+    const [x,y]=key.split(',').map(Number), c=getColor(x,y);
+    if(c){ ctx.fillStyle=c; ctx.fillRect(x*s,y*s,s,s); }
+    const guide = cell.classList.contains('gr')||cell.classList.contains('gb');
+    ctx.strokeStyle = guide?'#999':'#eee'; ctx.lineWidth=guide?2:1;
+    ctx.strokeRect(x*s,y*s,s,s);
+  });
+  const a=document.createElement('a');
+  a.href=cvs.toDataURL('image/png');
+  a.download=`cesni-${userName}-${gW}x${gH}.png`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+});
+</script>
+</body>
+</html>
