@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Çeşni – Interactive Carpet Designer</title>
+  <meta name="theme-color" content="#7c1d1d">
+  <!-- Çeşni Xarı bülbül flower favicon (inline SVG, no extra file needed) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%237c1d1d'/%3E%3Cg%20fill='%23e7c558'%3E%3Cg%20transform='rotate(0%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(60%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(120%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(180%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(240%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(300%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3C/g%3E%3Ccircle%20cx='32'%20cy='32'%20r='7.5'%20fill='%23b32d2e'%20stroke='%23e7c558'%20stroke-width='2.5'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%237c1d1d'/%3E%3Cg%20fill='%23e7c558'%3E%3Cg%20transform='rotate(0%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(60%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(120%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(180%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(240%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3Cg%20transform='rotate(300%2032%2032)'%3E%3Cellipse%20cx='32'%20cy='16'%20rx='6'%20ry='12'/%3E%3C/g%3E%3C/g%3E%3Ccircle%20cx='32'%20cy='32'%20r='7.5'%20fill='%23b32d2e'%20stroke='%23e7c558'%20stroke-width='2.5'/%3E%3C/svg%3E">
   <style>
     /* ── THEME TOKENS ─────────────────────────── */
     :root {
@@ -182,6 +186,7 @@
       box-shadow:0 6px 18px rgba(140,20,20,.45);transition:filter .15s,transform .08s;letter-spacing:.5px}
     .lg-btn:hover{filter:brightness(1.13)}.lg-btn:active{transform:scale(.98)}
     .lg-err{min-height:15px;font-size:.72rem;color:#ff9090;text-align:center;margin-top:10px}
+    .lg-err.ok{color:#8fe6ac;font-size:.78rem;line-height:1.5}
     .lg-foot{text-align:center;font-size:.64rem;color:#9c8a66;margin-top:14px;line-height:1.5}
 
     /* checkbox label in sidebar */
@@ -465,7 +470,7 @@ function setupAuth() {
     authMode = t.dataset.tab;
     btn.textContent = authMode === 'login' ? 'Daxil ol →' : 'Qeydiyyat →';
     fldName.style.display = authMode === 'signup' ? 'block' : 'none';
-    err.textContent = '';
+    err.textContent = ''; err.classList.remove('ok');
   }));
 
   document.getElementById('authForm').addEventListener('submit', async e => {
@@ -476,7 +481,7 @@ function setupAuth() {
     const name  = document.getElementById('authName').value.trim();
     if (!email || !pass) { err.textContent = 'Please enter your email and password.'; return; }
     if (pass.length < 6)  { err.textContent = 'Password must be at least 6 characters.'; return; }
-    btn.disabled = true; err.textContent = '…';
+    btn.disabled = true; err.textContent = '…'; err.classList.remove('ok');
 
     try {
       if (authMode === 'signup') {
@@ -486,8 +491,9 @@ function setupAuth() {
         });
         if (error) { err.textContent = error.message; return; }
         if (!data.session) {   // email-confirmation is on → no session yet
-          err.textContent = '✓ Account created! Check your inbox to confirm, then log in.';
           document.querySelector('.lg-tab[data-tab="login"]').click();
+          err.textContent = '✅ We sent you a confirmation link. Please check your email and confirm your address, then log in.';
+          err.classList.add('ok');
           return;
         }
         startApp(data.user);
