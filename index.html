@@ -192,49 +192,219 @@
     /* checkbox label in sidebar */
     .chk{font-size:.66rem;color:var(--ts);display:flex;align-items:center;gap:5px;cursor:pointer}
     .chk input{accent-color:var(--ac);cursor:pointer}
+
+    /* ── LANDING / WELCOME PAGE ─────────────────── */
+    #landing{position:fixed;inset:0;z-index:900;overflow-y:auto;display:none;
+      background:#160707;color:#f3e9d2;font-family:'Segoe UI',system-ui,sans-serif}
+    #landing::-webkit-scrollbar{width:9px}
+    #landing::-webkit-scrollbar-thumb{background:#5a2326;border-radius:5px}
+    .ld-nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;
+      gap:12px;padding:13px 26px;background:rgba(18,8,9,.86);backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(212,172,13,.22)}
+    .ld-brand{display:flex;align-items:center;gap:11px}
+    .ld-brand .mk{width:38px;height:38px;flex-shrink:0}
+    .ld-brand h2{margin:0;font-size:1.3rem;color:#e7c558;letter-spacing:.5px;line-height:1}
+    .ld-brand p{margin:2px 0 0;font-size:.58rem;color:#cab488;letter-spacing:1.5px}
+    .ld-nav-btns{display:flex;gap:9px;flex-shrink:0}
+    .ld-nav-btns button{padding:9px 17px;border-radius:9px;font-size:.8rem;font-weight:700;cursor:pointer;
+      border:none;transition:filter .15s,transform .08s,background .15s}
+    .ld-nav-btns button:active{transform:scale(.96)}
+    .nb-login{background:transparent!important;color:#e7c558;border:1px solid rgba(212,172,13,.5)!important}
+    .nb-login:hover{background:rgba(212,172,13,.13)!important;filter:none}
+    .nb-signup{background:linear-gradient(135deg,#c0392b,#8b1e1e);color:#fff;box-shadow:0 5px 15px rgba(140,20,20,.42)}
+    .nb-signup:hover{filter:brightness(1.13)}
+    .nb-lang{background:transparent!important;color:#cab488;border:1px solid rgba(212,172,13,.42)!important;
+      font-weight:700;letter-spacing:.5px;min-width:42px}
+    .nb-lang:hover{background:rgba(212,172,13,.13)!important;filter:none;color:#e7c558}
+    .lg-lang{position:absolute;top:13px;right:15px;z-index:3;background:none;border:1px solid rgba(212,172,13,.35);
+      color:#cab488;font-size:.72rem;padding:5px 11px;border-radius:18px;cursor:pointer;font-weight:700}
+    .lg-lang:hover{background:rgba(212,172,13,.13);filter:none;color:#e7c558}
+
+    .ld-hero{position:relative;min-height:72vh;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;text-align:center;padding:64px 22px;overflow:hidden}
+    .ld-hero::before{content:'';position:absolute;inset:0;z-index:0;background:
+      linear-gradient(rgba(22,7,7,.62),rgba(22,7,7,.9)),
+      url('https://upload.wikimedia.org/wikipedia/commons/4/47/Dragon_carpet_from_Azerbaijan%2C_17-18th_century%2C_212_x_184_cm%2C_T84-1909.jpg') center/cover;
+      animation:heroZoom 24s ease-in-out infinite alternate}
+    @keyframes heroZoom{from{transform:scale(1)}to{transform:scale(1.1)}}
+    .ld-hero>*{position:relative;z-index:1}
+    .ld-hero .orn{color:#b32d2e;letter-spacing:10px;font-size:1.1rem;margin-bottom:12px}
+    .ld-hero h1{font-size:clamp(2.1rem,6vw,4rem);margin:0;color:#e7c558;letter-spacing:1px;
+      text-shadow:0 3px 24px rgba(0,0,0,.72);line-height:1.04}
+    .ld-h-sub{font-size:clamp(.92rem,2.2vw,1.18rem);color:#ecdfc4;margin:18px auto 8px;max-width:650px;line-height:1.6}
+    .ld-h-tag{font-size:.7rem;color:#cab488;letter-spacing:3px;text-transform:uppercase;margin:0 0 30px}
+    .ld-cta{padding:14px 34px;font-size:1rem;font-weight:700;color:#fff;border:none;border-radius:12px;
+      cursor:pointer;background:linear-gradient(135deg,#c0392b,#8b1e1e);
+      box-shadow:0 10px 30px rgba(140,20,20,.5);transition:filter .15s,transform .08s}
+    .ld-cta:hover{filter:brightness(1.13)}.ld-cta:active{transform:scale(.98)}
+
+    .ld-section{max-width:1120px;margin:0 auto;padding:56px 22px}
+    .ld-section h3{font-size:clamp(1.5rem,3.5vw,2.15rem);color:#e7c558;text-align:center;margin:0}
+    .ld-divider{width:62px;height:3px;background:linear-gradient(90deg,#b32d2e,#e7c558);
+      margin:13px auto 22px;border-radius:2px}
+    .ld-lead{text-align:center;color:#cab488;max-width:730px;margin:0 auto 36px;line-height:1.75;font-size:.96rem}
+    .ld-lead b{color:#e7c558}
+
+    .ld-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:20px}
+    .ld-card{background:rgba(34,18,20,.62);border:1px solid rgba(212,172,13,.2);border-radius:15px;
+      overflow:hidden;transition:transform .18s,border-color .18s,box-shadow .18s}
+    .ld-card:hover{transform:translateY(-5px);border-color:rgba(212,172,13,.55);box-shadow:0 16px 42px rgba(0,0,0,.5)}
+    .ld-ph{height:172px;background:#3a1c1e center/cover;position:relative}
+    .ld-ph::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 42%,rgba(20,8,9,.88))}
+    .ld-ph .ld-ph-t{position:absolute;left:14px;bottom:11px;z-index:1;font-size:1.1rem;font-weight:700;
+      color:#fff;text-shadow:0 2px 9px #000}
+    .ld-body{padding:14px 16px 17px}
+    .ld-body p{margin:0;font-size:.82rem;color:#dac9a7;line-height:1.6}
+
+    .ld-motifs{display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));gap:16px}
+    .ld-motif{background:rgba(34,18,20,.58);border:1px solid rgba(212,172,13,.18);border-radius:13px;
+      padding:16px 14px;text-align:center;transition:border-color .18s,transform .18s}
+    .ld-motif:hover{border-color:rgba(212,172,13,.5);transform:translateY(-3px)}
+    .ld-motif canvas{width:78px;height:78px;image-rendering:pixelated;background:#f8f3e7;border-radius:8px;padding:6px}
+    .ld-motif h4{margin:11px 0 3px;color:#e7c558;font-size:.92rem}
+    .ld-motif .az{font-size:.66rem;color:#b78f5a;letter-spacing:.5px;margin:0 0 5px}
+    .ld-motif p{margin:0;font-size:.74rem;color:#cbb78f;line-height:1.5}
+
+    .ld-foot{text-align:center;padding:52px 22px 60px;border-top:1px solid rgba(212,172,13,.16);background:rgba(12,4,5,.55)}
+    .ld-foot h3{color:#e7c558;font-size:1.65rem;margin:0 0 8px}
+    .ld-foot p{color:#cab488;margin:0 0 22px}
+    .ld-foot-cr{margin-top:30px;font-size:.66rem;color:#8c7a58;letter-spacing:.5px}
+
+    /* login → back to landing */
+    .lg-back{position:absolute;top:13px;left:15px;z-index:3;background:none;border:1px solid rgba(212,172,13,.35);
+      color:#cab488;font-size:.72rem;padding:5px 12px;border-radius:18px;cursor:pointer;font-weight:600}
+    .lg-back:hover{background:rgba(212,172,13,.13);filter:none}
+
+    /* ── PATTERN LIBRARY (sidebar + modal) ──────── */
+    #selPat{font-size:.64rem;color:var(--ts);text-align:center;line-height:1.4;min-height:14px}
+    #modalBack{position:fixed;inset:0;z-index:1100;background:rgba(8,4,5,.74);backdrop-filter:blur(4px);
+      display:none;align-items:center;justify-content:center;padding:18px}
+    #patModal{width:min(700px,96vw);max-height:88vh;overflow-y:auto;background:var(--cg-bg);
+      border:1px solid var(--bd);border-radius:16px;box-shadow:0 26px 72px rgba(0,0,0,.62);padding:20px 22px 24px}
+    .pm-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+    .pm-head h2{margin:0;font-size:1.16rem;color:var(--ac)}
+    .pm-x{background:none!important;border:none!important;color:var(--tx);font-size:1.35rem;cursor:pointer;
+      padding:0 6px;font-weight:700;line-height:1}
+    .pm-x:hover{filter:none;color:var(--ac)}
+    .pm-sub{font-size:.74rem;color:var(--ts);margin:0 0 16px;line-height:1.55}
+    .pm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:11px}
+    .pm-item{background:var(--inp-bg);border:1.5px solid var(--bd);border-radius:11px;padding:11px 8px 9px;
+      text-align:center;cursor:pointer;transition:border-color .14s,transform .1s,box-shadow .14s}
+    .pm-item:hover{border-color:var(--ac);transform:translateY(-3px);box-shadow:0 8px 18px var(--shadow)}
+    .pm-item canvas{width:72px;height:72px;image-rendering:pixelated;background:#f8f3e7;border-radius:7px;padding:5px}
+    .pm-nm{font-size:.74rem;font-weight:700;color:var(--tx);margin-top:7px;line-height:1.15}
+    .pm-az{font-size:.63rem;color:var(--ts)}
   </style>
   <!-- Supabase client — cross-device accounts + cloud storage -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
+<!-- ══════════════ LANDING / WELCOME PAGE ══════════════ -->
+<div id="landing">
+  <nav class="ld-nav">
+    <div class="ld-brand">
+      <svg class="mk" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="13" fill="#7c1d1d"/>
+        <g fill="#e7c558">
+          <g transform="rotate(0 32 32)"><ellipse cx="32" cy="16" rx="6" ry="12"/></g>
+          <g transform="rotate(60 32 32)"><ellipse cx="32" cy="16" rx="6" ry="12"/></g>
+          <g transform="rotate(120 32 32)"><ellipse cx="32" cy="16" rx="6" ry="12"/></g>
+          <g transform="rotate(180 32 32)"><ellipse cx="32" cy="16" rx="6" ry="12"/></g>
+          <g transform="rotate(240 32 32)"><ellipse cx="32" cy="16" rx="6" ry="12"/></g>
+          <g transform="rotate(300 32 32)"><ellipse cx="32" cy="16" rx="6" ry="12"/></g>
+        </g>
+        <circle cx="32" cy="32" r="7.5" fill="#b32d2e" stroke="#e7c558" stroke-width="2.5"/>
+      </svg>
+      <div><h2>Çeşni</h2><p data-i18n="navStudio">AZƏRBAYCAN XALÇA STUDİYASI</p></div>
+    </div>
+    <div class="ld-nav-btns">
+      <button class="nb-lang" id="ldLang" onclick="toggleLang()" title="Dil / Language">EN</button>
+      <button class="nb-login"  data-i18n="navLogin"  onclick="openAuth('login')">Daxil ol</button>
+      <button class="nb-signup" data-i18n="navSignup" onclick="openAuth('signup')">Qeydiyyat</button>
+    </div>
+  </nav>
+
+  <header class="ld-hero">
+    <div class="orn">✦ ❖ ✦</div>
+    <h1 data-i18n="heroTitle">Azərbaycan Xalçası</h1>
+    <p class="ld-h-sub" data-i18n="heroSub">Bir millətin toxunmuş ruhu — min illik ilmələr, rənglər və mənalar, indi sənin əlində.</p>
+    <p class="ld-h-tag" data-i18n="heroTag">UNESCO QEYRİ-MADDİ MƏDƏNİ İRS · 2010</p>
+    <button class="ld-cta" data-i18n="ctaStart" onclick="openAuth('signup')">Dizayna başla →</button>
+  </header>
+
+  <section class="ld-section">
+    <h3 data-i18n="s1title">Yaşayan İrs</h3>
+    <div class="ld-divider"></div>
+    <p class="ld-lead" data-i18n="s1lead">Azərbaycan xalçaçılığı dünyanın ən qədim və zərif sənət ənənələrindən biridir —
+      min ildən artıqdır ki, anadan qıza ötürülür. Hər xalça bir dildir: onun medalyonları, haşiyələri və kiçik
+      ilmələri qoruma, məhsuldarlıq, bolluq və əbədi həyat arzularını daşıyır. <b>2010-cu ildə UNESCO</b> bu ənənəni
+      Bəşəriyyətin Qeyri-Maddi Mədəni İrsinin Reprezentativ Siyahısına daxil etdi.</p>
+  </section>
+
+  <section class="ld-section">
+    <h3 data-i18n="s2title">Yeddi Xalçaçılıq Məktəbi</h3>
+    <div class="ld-divider"></div>
+    <p class="ld-lead" data-i18n="s2lead">Azərbaycanın hər tarixi bölgəsi öz təkrarsız ilmə, rəng və naxış üslubunu yaratmışdır.</p>
+    <div class="ld-grid" id="schoolGrid"></div>
+  </section>
+
+  <section class="ld-section">
+    <h3 data-i18n="s3title">Naxışlar və Mənaları</h3>
+    <div class="ld-divider"></div>
+    <p class="ld-lead" data-i18n="s3lead">Hər ilmənin bir hekayəsi var. Həmin naxışlar dizaynerə də yerləşdirilib —
+      <b>bir kliklə işinə əlavə et.</b></p>
+    <div class="ld-motifs" id="motifGrid"></div>
+  </section>
+
+  <footer class="ld-foot">
+    <h3 data-i18n="footTitle">Öz hekayəni toxu</h3>
+    <p data-i18n="footSub">Pulsuz hesab yarat və bu gün öz xalçanı dizayn etməyə başla.</p>
+    <button class="ld-cta" data-i18n="footCta" onclick="openAuth('signup')">Hesab yarat →</button>
+    <div><button class="nb-login" style="margin-top:15px" data-i18n="footHave" onclick="openAuth('login')">Artıq hesabım var</button></div>
+    <div class="ld-foot-cr" data-i18n="footCr">Çeşni · İnteraktiv Xalça Dizayneri · 🧵 Azərbaycanda hazırlanıb</div>
+  </footer>
+</div>
+
 <!-- ══════════════ LOGIN SCREEN ══════════════ -->
 <div id="loginScreen">
-  <div class="lg-bg" style="background-image:url('https://images.unsplash.com/photo-1583850384879-130cb0460481?q=80&w=1920&auto=format&fit=crop')"></div>
-  <div class="lg-bg" style="background-image:url('https://images.unsplash.com/photo-1600166898405-da9535204843?q=80&w=1920&auto=format&fit=crop')"></div>
-  <div class="lg-bg" style="background-image:url('https://images.unsplash.com/photo-1604147495798-57beb5d6af73?q=80&w=1920&auto=format&fit=crop')"></div>
+  <div class="lg-bg" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/47/Dragon_carpet_from_Azerbaijan%2C_17-18th_century%2C_212_x_184_cm%2C_T84-1909.jpg')"></div>
+  <div class="lg-bg" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Azerbaijani_carpet_Ajdahaly_from_Karabakh.JPG/1280px-Azerbaijani_carpet_Ajdahaly_from_Karabakh.JPG')"></div>
+  <div class="lg-bg" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Azerbaijani_carpet_BAHAR_Latif_Kerimov.jpg/1280px-Azerbaijani_carpet_BAHAR_Latif_Kerimov.jpg')"></div>
   <div class="lg-overlay"></div>
 
   <div class="lg-card">
+    <button class="lg-back" data-i18n="backBtn" onclick="showLanding()">← Geri</button>
+    <button class="lg-lang" id="lgLang" onclick="toggleLang()" title="Dil / Language">EN</button>
     <div class="lg-logo">
       <div class="orn">✦ ❖ ✦</div>
       <h1>Çeşni</h1>
     </div>
-    <div class="lg-sub">Azərbaycan Xalça Dizayn Studiyası<br>Interactive Carpet Designer</div>
+    <div class="lg-sub" data-i18n="lgSub">Azərbaycan Xalça Dizayn Studiyası<br>İnteraktiv Xalça Dizayneri</div>
 
     <div class="lg-tabs">
-      <div class="lg-tab on" data-tab="login">Daxil ol · Login</div>
-      <div class="lg-tab" data-tab="signup">Qeydiyyat · Sign Up</div>
+      <div class="lg-tab on" data-tab="login" data-i18n="tabLogin">Daxil ol</div>
+      <div class="lg-tab" data-tab="signup" data-i18n="tabSignup">Qeydiyyat</div>
     </div>
 
     <form id="authForm" autocomplete="off">
       <div class="lg-field" id="fldName" style="display:none">
-        <label>Weaver name · Ad</label>
-        <input class="lg-inp" id="authName" type="text" placeholder="e.g. Leyla" autocomplete="nickname">
+        <label data-i18n="lblName">Toxucu adı</label>
+        <input class="lg-inp" id="authName" type="text" placeholder="məs. Leyla" data-i18n-ph="phName" autocomplete="nickname">
       </div>
       <div class="lg-field">
-        <label>Email</label>
-        <input class="lg-inp" id="authEmail" type="email" placeholder="you@example.com" autocomplete="username">
+        <label data-i18n="lblEmail">E-poçt</label>
+        <input class="lg-inp" id="authEmail" type="email" placeholder="siz@nümunə.com" data-i18n-ph="phEmail" autocomplete="username">
       </div>
       <div class="lg-field">
-        <label>Password · Şifrə</label>
+        <label data-i18n="lblPass">Şifrə</label>
         <input class="lg-inp" id="authPass" type="password" placeholder="••••••••" autocomplete="current-password">
       </div>
       <button class="lg-btn" type="submit" id="authBtn">Daxil ol →</button>
       <div class="lg-err" id="authErr"></div>
     </form>
 
-    <div class="lg-foot">🧵 Your designs save automatically to your account.</div>
+    <div class="lg-foot" data-i18n="lgFoot">🧵 Dizaynların hesabına avtomatik yadda saxlanılır.</div>
   </div>
 </div>
 
@@ -245,106 +415,116 @@
 
   <!-- Header -->
   <div class="sb-head">
-    <div><h1>Çeşni Designer</h1><p>Smart Symmetry · Point Paper,Please,use a computer for better colours and results! </p></div>
-    <button class="dkbtn" id="btnDark">🌙</button>
+    <div><h1>Çeşni Designer</h1><p data-i18n="sbTagline">Ağıllı Simmetriya · Nöqtəli kağız · Daha yaxşı nəticə üçün kompüterdən istifadə edin!</p></div>
+    <div style="display:flex;gap:5px;flex-shrink:0">
+      <button class="dkbtn" id="sbLang" onclick="toggleLang()" title="Dil / Language">EN</button>
+      <button class="dkbtn" id="btnDark">🌙</button>
+    </div>
   </div>
 
   <!-- User / Account -->
   <div class="cg">
     <div class="ur">👤&nbsp;<span class="un" id="uname">—</span>
-      <button id="btnChgUser">Logout</button>
+      <button id="btnChgUser" data-i18n="logout">Çıxış</button>
     </div>
   </div>
 
   <!-- Zoom -->
   <div class="cg">
-    <div class="cg-t">🔍 Zoom</div>
+    <div class="cg-t" data-i18n="cgZoom">🔍 Yaxınlaşma</div>
     <input type="range" id="zoomSlider" min="5" max="40" value="20">
     <span class="zm-r" id="zoomRead">Normal (20px)</span>
   </div>
 
   <!-- Canvas size -->
   <div class="cg">
-    <div class="cg-t">📐 Canvas Size (Knots)</div>
+    <div class="cg-t" data-i18n="cgSize">📐 Kətan ölçüsü (İlmə)</div>
     <div class="dim-row">
-      <div class="dc"><span class="dl">Width</span><input type="number" id="gW" value="30" min="10" max="150"></div>
+      <div class="dc"><span class="dl" data-i18n="lblWidth">En</span><input type="number" id="gW" value="30" min="10" max="150"></div>
       <span style="color:var(--ts);margin-top:10px;font-size:.9rem">×</span>
-      <div class="dc"><span class="dl">Length</span><input type="number" id="gH" value="40" min="10" max="150"></div>
+      <div class="dc"><span class="dl" data-i18n="lblLength">Uzunluq</span><input type="number" id="gH" value="40" min="10" max="150"></div>
       <span id="dimPrev" style="font-size:.66rem;color:var(--ts);margin-top:10px;white-space:nowrap">30×40</span>
     </div>
-    <button id="btnUpdate" class="g" style="margin-top:2px">Generate Grid</button>
+    <button id="btnUpdate" class="g" style="margin-top:2px" data-i18n="genGrid">Şəbəkə yarat</button>
     <div class="presets">
-      <button class="preset" data-w="30" data-h="40">Quick<br><b>30×40</b></button>
-      <button class="preset" data-w="60" data-h="80">Detailed<br><b>60×80</b></button>
-      <button class="preset" data-w="100" data-h="140">Fine<br><b>100×140</b></button>
+      <button class="preset" data-w="30" data-h="40"><span data-i18n="presetQuick">Sürətli</span><br><b>30×40</b></button>
+      <button class="preset" data-w="60" data-h="80"><span data-i18n="presetDetailed">Detallı</span><br><b>60×80</b></button>
+      <button class="preset" data-w="100" data-h="140"><span data-i18n="presetFine">İncə</span><br><b>100×140</b></button>
     </div>
   </div>
 
   <!-- Drawing tools -->
   <div class="cg">
-    <div class="cg-t">🛠 Drawing Tools</div>
+    <div class="cg-t" data-i18n="cgTools">🛠 Çəkim alətləri</div>
     <div class="tools">
-      <button class="on" data-tool="draw">✏️<br>Draw</button>
-      <button data-tool="erase">⌫<br>Erase</button>
-      <button data-tool="fill">🪣<br>Fill</button>
-      <button data-tool="line">╱<br>Line</button>
-      <button data-tool="rect">▭<br>Rect</button>
+      <button class="on" data-tool="draw">✏️<br><span data-i18n="toolDraw">Çək</span></button>
+      <button data-tool="erase">⌫<br><span data-i18n="toolErase">Sil</span></button>
+      <button data-tool="fill">🪣<br><span data-i18n="toolFill">Doldur</span></button>
+      <button data-tool="line">╱<br><span data-i18n="toolLine">Xətt</span></button>
+      <button data-tool="rect">▭<br><span data-i18n="toolRect">Düzbucaq</span></button>
     </div>
     <div class="row2" style="margin-top:4px">
-      <button id="btnUndo" class="b" disabled>↩ Undo</button>
-      <button id="btnRedo" class="tl" disabled>↪ Redo</button>
+      <button id="btnUndo" class="b" disabled data-i18n="btnUndo">↩ Geri al</button>
+      <button id="btnRedo" class="tl" disabled data-i18n="btnRedo">↪ İrəli</button>
     </div>
+  </div>
+
+  <!-- Pattern library -->
+  <div class="cg">
+    <div class="cg-t" data-i18n="cgPat">🧩 Naxış əlavə et</div>
+    <button id="btnPat" class="p" data-i18n="btnPatLbl">＋ Xalça naxışlarına bax</button>
+    <div id="selPat">Əsl naxışlar — bir kliklə kətanına vur.</div>
   </div>
 
   <!-- Color -->
   <div class="cg">
-    <div class="cg-t">🎨 Yarn Color</div>
+    <div class="cg-t" data-i18n="cgColor">🎨 İplik rəngi</div>
     <input type="color" id="colorPicker" value="#b32d2e">
     <div class="swatch-row" id="swatches"></div>
   </div>
 
   <!-- Symmetry -->
   <div class="cg">
-    <div class="cg-t">↔ Symmetry Mode</div>
+    <div class="cg-t" data-i18n="cgSym">↔ Simmetriya rejimi</div>
     <div class="sym-list">
-      <label class="so"><input type="radio" name="sym" value="none"> None <span class="sbadge">free</span></label>
-      <label class="so"><input type="radio" name="sym" value="2h"> Left ↔ Right <span class="sbadge">2-way</span></label>
-      <label class="so"><input type="radio" name="sym" value="2v"> Top ↔ Bottom <span class="sbadge">2-way</span></label>
-      <label class="so"><input type="radio" name="sym" value="4way" checked> 4-Way Full <span class="sbadge">full</span></label>
+      <label class="so"><input type="radio" name="sym" value="none"> <span data-i18n="symNone">Yoxdur</span> <span class="sbadge" data-i18n="badgeFree">sərbəst</span></label>
+      <label class="so"><input type="radio" name="sym" value="2h"> <span data-i18n="symH">Sol ↔ Sağ</span> <span class="sbadge" data-i18n="badge2">2-li</span></label>
+      <label class="so"><input type="radio" name="sym" value="2v"> <span data-i18n="symV">Üst ↔ Alt</span> <span class="sbadge" data-i18n="badge2b">2-li</span></label>
+      <label class="so"><input type="radio" name="sym" value="4way" checked> <span data-i18n="sym4">4 tərəfli tam</span> <span class="sbadge" data-i18n="badgeFull">tam</span></label>
     </div>
   </div>
 
   <!-- Reference image -->
   <div class="cg">
-    <div class="cg-t">🖼 Reference Image</div>
+    <div class="cg-t" data-i18n="cgRef">🖼 İstinad şəkli</div>
     <input type="file" id="refInput" accept="image/*">
     <div class="op-row">
-      <span>Opacity:</span>
+      <span data-i18n="opacity">Şəffaflıq:</span>
       <input type="range" id="refOp" min="0" max="100" value="40" style="flex:1">
       <span id="refOpVal">40%</span>
     </div>
-    <button id="btnClrRef" class="r" style="font-size:.7rem;padding:4px">✕ Remove Image</button>
-    <p style="font-size:.64rem;color:var(--ts);margin:5px 0 0;line-height:1.4">Upload a picture to show it faintly behind the grid, then trace your design over it by hand. Use <b>Opacity</b> to fade it in or out.</p>
+    <button id="btnClrRef" class="r" style="font-size:.7rem;padding:4px" data-i18n="removeImg">✕ Şəkli sil</button>
+    <p style="font-size:.64rem;color:var(--ts);margin:5px 0 0;line-height:1.4" data-i18n="refNote">Şəbəkənin arxasında solğun görünməsi üçün şəkil yüklə, sonra dizaynını üstündən əllə köçür. <b>Şəffaflıq</b> ilə şəkli artır və ya azalt.</p>
   </div>
 
   <!-- Knot counter -->
   <div class="cg">
-    <div class="cg-t">🔢 Knot Counter <span id="totKnots" style="margin-left:auto;font-size:.66rem;font-weight:400;color:var(--ts)"></span></div>
-    <div class="kl" id="knotList"><em style="font-size:.68rem;color:var(--ts)">No knots yet</em></div>
+    <div class="cg-t"><span data-i18n="cgKnot">🔢 İlmə sayğacı</span> <span id="totKnots" style="margin-left:auto;font-size:.66rem;font-weight:400;color:var(--ts)"></span></div>
+    <div class="kl" id="knotList"><em style="font-size:.68rem;color:var(--ts)">Hələ ilmə yoxdur</em></div>
   </div>
 
   <!-- Save / Load -->
   <div class="cg">
-    <div class="cg-t">💾 My Designs</div>
+    <div class="cg-t" data-i18n="cgSaves">💾 Dizaynlarım</div>
     <div class="save-list" id="saveList"></div>
     <div class="row2" style="margin-top:4px">
-      <button id="btnSave" class="b">💾 Save</button>
-      <button id="btnLoad" class="tl">📂 Load</button>
+      <button id="btnSave" class="b" data-i18n="btnSaveLbl">💾 Saxla</button>
+      <button id="btnLoad" class="tl" data-i18n="btnLoadLbl">📂 Yüklə</button>
     </div>
   </div>
 
-  <button id="btnClear" class="r">🗑 Clear Grid</button>
-  <button id="btnExport" class="p">💾 Export as PNG</button>
+  <button id="btnClear" class="r" data-i18n="btnClear">🗑 Şəbəkəni təmizlə</button>
+  <button id="btnExport" class="p" data-i18n="btnExport">💾 PNG kimi ixrac et</button>
 
 </div><!-- #sb -->
 
@@ -365,6 +545,19 @@
 </div>
 
 </div><!-- #app -->
+
+<!-- ══════════════ PATTERN LIBRARY MODAL ══════════════ -->
+<div id="modalBack">
+  <div id="patModal">
+    <div class="pm-head">
+      <h2 data-i18n="patTitle">🧩 Xalça Naxış Kitabxanası</h2>
+      <button class="pm-x" id="patClose" title="Close">✕</button>
+    </div>
+    <p class="pm-sub" data-i18n="patSub">Əsl Azərbaycan naxışları. Birinə vur — o, cari <b>iplik rəngində</b>
+      kətanına basılır və aktiv <b>simmetriya rejiminə</b> uyğunlaşır. Sonra istədiyin yerə toxun.</p>
+    <div class="pm-grid" id="patGrid"></div>
+  </div>
+</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -398,6 +591,11 @@ const rowLbls   = document.getElementById('rowLbls');
 const lCorner   = document.getElementById('lCorner');
 const unameEl   = document.getElementById('uname');
 const btnChgUser= document.getElementById('btnChgUser');
+const btnPat    = document.getElementById('btnPat');
+const selPat    = document.getElementById('selPat');
+const modalBack = document.getElementById('modalBack');
+const patGrid   = document.getElementById('patGrid');
+const patClose  = document.getElementById('patClose');
 const LW=28, LH=15; // label width / height px
 
 // ════════════════════════════════════════════════
@@ -405,6 +603,7 @@ const LW=28, LH=15; // label width / height px
 // ════════════════════════════════════════════════
 let gW=30, gH=40;
 let drawing=false, tool='draw';
+let activePattern=null;     // currently selected stamp pattern
 let tx=null, ty=null;       // shape tool start
 let prevCells=[];            // preview-highlighted cells
 let cellMap   = new Map();   // "x,y" → <div>
@@ -417,6 +616,9 @@ let userName  = '';          // display name (weaver name) of the logged-in user
 let currentUser = null;      // Supabase auth user object
 let supa = null;             // Supabase client instance
 let darkMode  = localStorage.getItem('cesni_dark') === '1';
+let lang      = localStorage.getItem('cesni_lang') || 'az';   // 'az' | 'en'
+const pNm   = p => lang === 'az' ? p.az  : p.en;
+const pMean = p => lang === 'az' ? p.maz : p.mean;
 
 // ════════════════════════════════════════════════
 //  ⚙ SUPABASE SETUP  —  PASTE YOUR PROJECT VALUES BELOW
@@ -432,6 +634,9 @@ const SUPABASE_ANON_KEY = 'sb_publishable_BaF0JY8gpV_nhZ0WYcDzxQ_up_uHFVq';
 document.addEventListener('DOMContentLoaded', async () => {
   applyDark();
   setupAuth();
+  setupPatterns();
+  buildLanding();
+  setLang(lang);
   if (!window.supabase || SUPABASE_URL.includes('YOUR_PROJECT_REF')) {
     showLogin();
     document.getElementById('authErr').textContent =
@@ -441,7 +646,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const { data: { session } } = await supa.auth.getSession();
   if (session) startApp(session.user);
-  else showLogin();
+  else showLanding();
 });
 
 // ════════════════════════════════════════════════
@@ -455,9 +660,135 @@ function applyDark() {
 btnDark.addEventListener('click', () => { darkMode = !darkMode; applyDark(); });
 
 // ════════════════════════════════════════════════
+//  LANGUAGE  (Azerbaijani ⇄ English)
+// ════════════════════════════════════════════════
+const I18N = {
+  // landing nav + hero
+  navStudio:{az:'AZƏRBAYCAN XALÇA STUDİYASI', en:'AZERBAIJANI CARPET STUDIO'},
+  navLogin :{az:'Daxil ol', en:'Log in'},
+  navSignup:{az:'Qeydiyyat', en:'Sign Up'},
+  heroTitle:{az:'Azərbaycan Xalçası', en:'The Azerbaijani Carpet'},
+  heroSub  :{az:'Bir millətin toxunmuş ruhu — min illik ilmələr, rənglər və mənalar, indi sənin əlində.',
+             en:'The woven soul of a nation — a thousand years of knots, colour and meaning, now in your hands.'},
+  heroTag  :{az:'UNESCO QEYRİ-MADDİ MƏDƏNİ İRS · 2010', en:'UNESCO INTANGIBLE CULTURAL HERITAGE · 2010'},
+  ctaStart :{az:'Dizayna başla →', en:'Start Designing →'},
+  // landing sections
+  s1title:{az:'Yaşayan İrs', en:'A Living Heritage'},
+  s1lead :{az:'Azərbaycan xalçaçılığı dünyanın ən qədim və zərif sənət ənənələrindən biridir — min ildən artıqdır ki, anadan qıza ötürülür. Hər xalça bir dildir: onun medalyonları, haşiyələri və kiçik ilmələri qoruma, məhsuldarlıq, bolluq və əbədi həyat arzularını daşıyır. <b>2010-cu ildə UNESCO</b> bu ənənəni Bəşəriyyətin Qeyri-Maddi Mədəni İrsinin Reprezentativ Siyahısına daxil etdi.',
+           en:'Azerbaijani carpet weaving is one of the oldest and most refined craft traditions on Earth — passed from mother to daughter for over a thousand years. Every carpet is a language: its medallions, borders and tiny knots carry wishes for protection, fertility, abundance and eternal life. In <b>2010 UNESCO</b> inscribed the tradition on the Representative List of the Intangible Cultural Heritage of Humanity.'},
+  s2title:{az:'Yeddi Xalçaçılıq Məktəbi', en:'The Seven Carpet Schools'},
+  s2lead :{az:'Azərbaycanın hər tarixi bölgəsi öz təkrarsız ilmə, rəng və naxış üslubunu yaratmışdır.',
+           en:'Each historic region of Azerbaijan grew its own unmistakable style of knot, colour and ornament.'},
+  s3title:{az:'Naxışlar və Mənaları', en:'Motifs & Their Meanings'},
+  s3lead :{az:'Hər ilmənin bir hekayəsi var. Həmin naxışlar dizaynerə də yerləşdirilib — <b>bir kliklə işinə əlavə et.</b>',
+           en:'Every knot tells a story. These same motifs are built into the designer — <b>add them to your work with a single click.</b>'},
+  footTitle:{az:'Öz hekayəni toxu', en:'Weave your own story'},
+  footSub  :{az:'Pulsuz hesab yarat və bu gün öz xalçanı dizayn etməyə başla.', en:'Create a free account and start designing your carpet today.'},
+  footCta  :{az:'Hesab yarat →', en:'Create Account →'},
+  footHave :{az:'Artıq hesabım var', en:'I already have an account'},
+  footCr   :{az:'Çeşni · İnteraktiv Xalça Dizayneri · 🧵 Azərbaycanda hazırlanıb', en:'Çeşni · Interactive Carpet Designer · Made with 🧵 in Azərbaycan'},
+  // login screen
+  backBtn :{az:'← Geri', en:'← Back'},
+  lgSub   :{az:'Azərbaycan Xalça Dizayn Studiyası<br>İnteraktiv Xalça Dizayneri', en:'Azerbaijani Carpet Design Studio<br>Interactive Carpet Designer'},
+  tabLogin:{az:'Daxil ol', en:'Log in'},
+  tabSignup:{az:'Qeydiyyat', en:'Sign Up'},
+  lblName :{az:'Toxucu adı', en:'Weaver name'},
+  phName  :{az:'məs. Leyla', en:'e.g. Leyla'},
+  lblEmail:{az:'E-poçt', en:'Email'},
+  phEmail :{az:'siz@nümunə.com', en:'you@example.com'},
+  lblPass :{az:'Şifrə', en:'Password'},
+  lgFoot  :{az:'🧵 Dizaynların hesabına avtomatik yadda saxlanılır.', en:'🧵 Your designs save automatically to your account.'},
+  authBtnLogin :{az:'Daxil ol →', en:'Log in →'},
+  authBtnSignup:{az:'Qeydiyyat →', en:'Sign up →'},
+  // sidebar
+  sbTagline:{az:'Ağıllı Simmetriya · Nöqtəli kağız · Daha yaxşı nəticə üçün kompüterdən istifadə edin!',
+             en:'Smart Symmetry · Point Paper · use a computer for better colours and results!'},
+  logout:{az:'Çıxış', en:'Logout'},
+  cgZoom:{az:'🔍 Yaxınlaşma', en:'🔍 Zoom'},
+  cgSize:{az:'📐 Kətan ölçüsü (İlmə)', en:'📐 Canvas Size (Knots)'},
+  lblWidth:{az:'En', en:'Width'},
+  lblLength:{az:'Uzunluq', en:'Length'},
+  genGrid:{az:'Şəbəkə yarat', en:'Generate Grid'},
+  presetQuick:{az:'Sürətli', en:'Quick'},
+  presetDetailed:{az:'Detallı', en:'Detailed'},
+  presetFine:{az:'İncə', en:'Fine'},
+  cgTools:{az:'🛠 Çəkim alətləri', en:'🛠 Drawing Tools'},
+  toolDraw:{az:'Çək', en:'Draw'},
+  toolErase:{az:'Sil', en:'Erase'},
+  toolFill:{az:'Doldur', en:'Fill'},
+  toolLine:{az:'Xətt', en:'Line'},
+  toolRect:{az:'Düzbucaq', en:'Rect'},
+  btnUndo:{az:'↩ Geri al', en:'↩ Undo'},
+  btnRedo:{az:'↪ İrəli', en:'↪ Redo'},
+  cgPat:{az:'🧩 Naxış əlavə et', en:'🧩 Add Pattern'},
+  btnPatLbl:{az:'＋ Xalça naxışlarına bax', en:'＋ Browse Carpet Patterns'},
+  selPatDefault:{az:'Əsl naxışlar — bir kliklə kətanına vur.', en:'Authentic motifs — stamp them onto your canvas in one click.'},
+  cgColor:{az:'🎨 İplik rəngi', en:'🎨 Yarn Color'},
+  cgSym:{az:'↔ Simmetriya rejimi', en:'↔ Symmetry Mode'},
+  symNone:{az:'Yoxdur', en:'None'},
+  symH:{az:'Sol ↔ Sağ', en:'Left ↔ Right'},
+  symV:{az:'Üst ↔ Alt', en:'Top ↔ Bottom'},
+  sym4:{az:'4 tərəfli tam', en:'4-Way Full'},
+  badgeFree:{az:'sərbəst', en:'free'},
+  badge2:{az:'2-li', en:'2-way'},
+  badge2b:{az:'2-li', en:'2-way'},
+  badgeFull:{az:'tam', en:'full'},
+  cgRef:{az:'🖼 İstinad şəkli', en:'🖼 Reference Image'},
+  opacity:{az:'Şəffaflıq:', en:'Opacity:'},
+  removeImg:{az:'✕ Şəkli sil', en:'✕ Remove Image'},
+  refNote:{az:'Şəbəkənin arxasında solğun görünməsi üçün şəkil yüklə, sonra dizaynını üstündən əllə köçür. <b>Şəffaflıq</b> ilə şəkli artır və ya azalt.',
+           en:'Upload a picture to show it faintly behind the grid, then trace your design over it by hand. Use <b>Opacity</b> to fade it in or out.'},
+  cgKnot:{az:'🔢 İlmə sayğacı', en:'🔢 Knot Counter'},
+  noKnots:{az:'Hələ ilmə yoxdur', en:'No knots yet'},
+  knTotal:{az:'cəmi', en:'total'},
+  cgSaves:{az:'💾 Dizaynlarım', en:'💾 My Designs'},
+  btnSaveLbl:{az:'💾 Saxla', en:'💾 Save'},
+  btnLoadLbl:{az:'📂 Yüklə', en:'📂 Load'},
+  btnClear:{az:'🗑 Şəbəkəni təmizlə', en:'🗑 Clear Grid'},
+  btnExport:{az:'💾 PNG kimi ixrac et', en:'💾 Export as PNG'},
+  zoomOut:{az:'Uzaqlaşdırılıb', en:'Zoomed Out'},
+  zoomIn :{az:'Yaxınlaşdırılıb', en:'Zoomed In'},
+  zoomNorm:{az:'Normal', en:'Normal'},
+  patTitle:{az:'🧩 Xalça Naxış Kitabxanası', en:'🧩 Carpet Pattern Library'},
+  patSub:{az:'Əsl Azərbaycan naxışları. Birinə vur — o, cari <b>iplik rəngində</b> kətanına basılır və aktiv <b>simmetriya rejiminə</b> uyğunlaşır. Sonra istədiyin yerə toxun.',
+          en:'Authentic Azerbaijani motifs. Click one — it stamps onto your canvas in the current <b>yarn colour</b> and follows your active <b>symmetry mode</b>. Then just tap where you want it.'},
+};
+
+function setLang(l) {
+  lang = (l === 'en') ? 'en' : 'az';
+  localStorage.setItem('cesni_lang', lang);
+  document.documentElement.setAttribute('lang', lang);
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = I18N[el.dataset.i18n]; if (v) el.innerHTML = v[lang];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = I18N[el.dataset.i18nPh]; if (v) el.placeholder = v[lang];
+  });
+  updateLangBtns();
+  // re-render language-aware dynamic content
+  if (typeof renderPatItems === 'function') renderPatItems();
+  if (typeof renderSchools === 'function') renderSchools();
+  if (typeof renderMotifGallery === 'function') renderMotifGallery();
+  if (typeof syncAuthBtn === 'function') syncAuthBtn();
+  if (!activePattern) selPat.textContent = I18N.selPatDefault[lang];
+  if (typeof renderKnots === 'function') renderKnots();
+  if (typeof updateZoomRead === 'function') updateZoomRead();
+}
+function toggleLang() { setLang(lang === 'az' ? 'en' : 'az'); }
+function updateLangBtns() {
+  const other = lang === 'az' ? 'EN' : 'AZ';
+  ['ldLang','lgLang','sbLang'].forEach(id => { const b = document.getElementById(id); if (b) b.textContent = other; });
+}
+
+// ════════════════════════════════════════════════
 //  ACCOUNTS / LOGIN  (Supabase email + password auth)
 // ════════════════════════════════════════════════
 let authMode = 'login';
+
+function syncAuthBtn() {
+  const b = document.getElementById('authBtn');
+  if (b) b.textContent = I18N[authMode === 'login' ? 'authBtnLogin' : 'authBtnSignup'][lang];
+}
 
 function setupAuth() {
   const tabs    = document.querySelectorAll('.lg-tab');
@@ -468,7 +799,7 @@ function setupAuth() {
   tabs.forEach(t => t.addEventListener('click', () => {
     tabs.forEach(x => x.classList.remove('on')); t.classList.add('on');
     authMode = t.dataset.tab;
-    btn.textContent = authMode === 'login' ? 'Daxil ol →' : 'Qeydiyyat →';
+    syncAuthBtn();
     fldName.style.display = authMode === 'signup' ? 'block' : 'none';
     err.textContent = ''; err.classList.remove('ok');
   }));
@@ -512,13 +843,30 @@ function setupAuth() {
 }
 
 function showLogin() {
+  document.getElementById('landing').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
+}
+
+// Welcome / landing page — shown before login
+function showLanding() {
+  document.getElementById('landing').style.display = 'block';
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'none';
+}
+
+// Jump from landing straight into the login card on a chosen tab
+function openAuth(tab) {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  const t = document.querySelector('.lg-tab[data-tab="' + tab + '"]');
+  if (t) t.click();
 }
 
 async function startApp(user) {
   currentUser = user;
   userName = (user.user_metadata && user.user_metadata.weaver_name) || user.email || 'Weaver';
+  document.getElementById('landing').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   unameEl.textContent = userName;
@@ -545,11 +893,12 @@ function applySize() {
   buildLabels();
 }
 
-zSlider.addEventListener('input', () => {
+function updateZoomRead() {
   const v = cpx();
-  applySize();
-  zRead.textContent = v < 15 ? `Zoomed Out (${v}px)` : v > 25 ? `Zoomed In (${v}px)` : `Normal (${v}px)`;
-});
+  const w = v < 15 ? I18N.zoomOut[lang] : v > 25 ? I18N.zoomIn[lang] : I18N.zoomNorm[lang];
+  zRead.textContent = `${w} (${v}px)`;
+}
+zSlider.addEventListener('input', () => { applySize(); updateZoomRead(); });
 
 inW.addEventListener('input', () => dimPrev.textContent = `${inW.value}×${inH.value}`);
 inH.addEventListener('input', () => dimPrev.textContent = `${inW.value}×${inH.value}`);
@@ -812,6 +1161,7 @@ function onDown(e) {
   const x=+t.dataset.x, y=+t.dataset.y;
   const color = tool==='erase' ? '' : cPick.value;
 
+  if (tool==='stamp') { stampPattern(x, y); drawing=false; return; }
   if (tool==='fill') { floodFill(x, y, color); drawing=false; return; }
   if (tool==='line'||tool==='rect') { tx=x; ty=y; showPrev([[x,y]]); return; }
   beginStroke(); paintSym(x, y, color);
@@ -849,6 +1199,8 @@ document.querySelectorAll('.tools button').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tools button').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on'); tool = btn.dataset.tool;
+    activePattern = null; clrPrev();
+    selPat.textContent = I18N.selPatDefault[lang];
     G.style.cursor = tool==='fill'?'cell' : tool==='erase'?'not-allowed' : 'crosshair';
   });
 });
@@ -946,8 +1298,8 @@ function recount() {
 
 function renderKnots() {
   let total = 0; colorCounts.forEach(v => total += v);
-  totKnots.textContent = total ? `${total.toLocaleString()} total` : '';
-  if (!colorCounts.size) { knotList.innerHTML='<em style="font-size:.68rem;color:var(--ts)">No knots yet</em>'; return; }
+  totKnots.textContent = total ? `${total.toLocaleString()} ${I18N.knTotal[lang]}` : '';
+  if (!colorCounts.size) { knotList.innerHTML=`<em style="font-size:.68rem;color:var(--ts)">${I18N.noKnots[lang]}</em>`; return; }
   const entries = [...colorCounts.entries()].filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
   knotList.innerHTML = '';
   entries.forEach(([c,n]) => {
@@ -1014,6 +1366,319 @@ async function loadDesign(name) {
   if (error || !data) { alert(`Design "${name}" not found.`); return; }
   applySnapshot(data.payload);
   dbUpsert(AUTOSAVE, data.payload);   // make the loaded design the current working copy
+}
+
+// ════════════════════════════════════════════════
+//  CARPET PATTERN LIBRARY  (stampable Azerbaijani motifs)
+//  Each grid: '#' = a knot, '.' = empty.
+// ════════════════════════════════════════════════
+const PATTERNS = [
+  { en:'Buta', az:'Buta', mean:'Almond-shaped paisley with a curved tip — life, fire and eternity.',
+    maz:'Əyri uclu badamvari naxış — həyat, od və əbədiyyət rəmzi.', grid:[
+    '......###..',
+    '.....##.##.',
+    '....##...##',
+    '...##....#.',
+    '...#....##.',
+    '..##...##..',
+    '..#...##...',
+    '.##..##....',
+    '.#..##.....',
+    '.#.##......',
+    '.###.......',
+    '#..##......',
+    '#...##.....',
+    '#....##....',
+    '.#....##...',
+    '.##....##..',
+    '..##....#..',
+    '...##..##..',
+    '....####...',
+    '.....##....',
+  ]},
+  { en:'Eight-Point Star', az:'Səkkizguşəli ulduz', mean:'The eight-pointed star — protection, guidance and prosperity.',
+    maz:'Səkkizguşəli ulduz — qoruyuculuq, bələdçilik və bərəkət.', grid:[
+    '......#......',
+    '.....###.....',
+    '.....###.....',
+    '.#...###...#.',
+    '.##.#####.##.',
+    '..#########..',
+    '#############',
+    '..#########..',
+    '.##.#####.##.',
+    '.#...###...#.',
+    '.....###.....',
+    '.....###.....',
+    '......#......',
+  ]},
+  { en:'Diamond Lattice', az:'Romb medalyon', mean:'Concentric hooked lozenges — fertility and a woman’s shield.',
+    maz:'İç-içə qarmaqlı romblar — məhsuldarlıq və qadın qalxanı.', grid:[
+    '......#......',
+    '.....#.#.....',
+    '....#...#....',
+    '...#.###.#...',
+    '..#.#...#.#..',
+    '.#.#.###.#.#.',
+    '#.#.#...#.#.#',
+    '.#.#.###.#.#.',
+    '..#.#...#.#..',
+    '...#.###.#...',
+    '....#...#....',
+    '.....#.#.....',
+    '......#......',
+  ]},
+  { en:'Octagon Medallion', az:'Göl', mean:'The “göl” medallion — the carpet’s heart and a tribe’s emblem.',
+    maz:'“Göl” medalyonu — xalçanın qəlbi və tayfanın rəmzi.', grid:[
+    '...#####...',
+    '..#.....#..',
+    '.#...#...#.',
+    '#...###...#',
+    '#..#####..#',
+    '#.###.###.#',
+    '#..#####..#',
+    '#...###...#',
+    '.#...#...#.',
+    '..#.....#..',
+    '...#####...',
+  ]},
+  { en:'Ram’s Horn', az:'Qoçbuynuzu', mean:'Paired ram’s horns — strength, heroism and fearless courage.',
+    maz:'Qoşa qoçbuynuzu — güc, qəhrəmanlıq və mərdlik.', grid:[
+    '.###.....###.',
+    '##..#...#..##',
+    '#...#...#...#',
+    '#..##...##..#',
+    '#.##.....##.#',
+    '.##.......##.',
+    '..#.......#..',
+    '..#########..',
+    '......#......',
+    '....#####....',
+  ]},
+  { en:'Cross', az:'Xaçlı', mean:'The hooked cross — wards off the evil eye in four directions.',
+    maz:'Qarmaqlı xaç — dörd tərəfdən bəd nəzərdən qoruyur.', grid:[
+    '##...#...##',
+    '.#...#...#.',
+    '..#..#..#..',
+    '...#####...',
+    '#....#....#',
+    '######.####',
+    '#....#....#',
+    '...#####...',
+    '..#..#..#..',
+    '.#...#...#.',
+    '##...#...##',
+  ]},
+  { en:'Comb', az:'Daraq', mean:'The comb (daraq) — purity and protection in birth and marriage.',
+    maz:'Daraq — saflıq, doğuş və evlilikdə qoruma rəmzi.', grid:[
+    '#.#.#.#.#',
+    '#.#.#.#.#',
+    '#.#.#.#.#',
+    '#.#.#.#.#',
+    '#########',
+    '#########',
+  ]},
+  { en:'Running S', az:'S su naxışı', mean:'The running “S” — water, the dragon and endless motion.',
+    maz:'Axar “S” — su, əjdaha və sonsuz hərəkət.', grid:[
+    '.#####..',
+    '.#......',
+    '.#......',
+    '.####...',
+    '...####.',
+    '......#.',
+    '......#.',
+    '..#####.',
+  ]},
+  { en:'Tree of Life', az:'Həyat ağacı', mean:'The tree of life — immortality and the bond of earth and sky.',
+    maz:'Həyat ağacı — ölməzlik, yerlə göyün bağı.', grid:[
+    '....#....',
+    '.#..#..#.',
+    '##.###.##',
+    '.#.###.#.',
+    '..#.#.#..',
+    '#.#####.#',
+    '.#.###.#.',
+    '..#.#.#..',
+    '...###...',
+    '....#....',
+    '....#....',
+    '..#####..',
+    '.#######.',
+  ]},
+  { en:'Stepped Medallion', az:'Pilləli medalyon', mean:'A bold Karabakh stepped lozenge of abundance.',
+    maz:'Cəsur Qarabağ pilləli rombu — bolluq rəmzi.', grid:[
+    '......#......',
+    '....#####....',
+    '...##...##...',
+    '..##.....##..',
+    '.##...#...##.',
+    '##..#####..##',
+    '#..##...##..#',
+    '##..#####..##',
+    '.##...#...##.',
+    '..##.....##..',
+    '...##...##...',
+    '....#####....',
+    '......#......',
+  ]},
+  { en:'Running Water', az:'Su naxışı', mean:'Running water — flow, life and abundance.',
+    maz:'Axar su — axın, həyat və bolluq.', grid:[
+    '#...#...#',
+    '##.###.##',
+    '.#.#.#.#.',
+    '..#.#.#..',
+    '..#.#.#..',
+    '.#.#.#.#.',
+    '##.###.##',
+    '#...#...#',
+  ]},
+];
+const MOTIF_COLORS = ['#b32d2e','#1d6fa4','#0f8a72','#d97706','#7c3aed','#1a9e5c','#c0392b','#8b1e1e'];
+
+// pattern cell coordinates centred on (cx,cy)
+function patternPts(p, cx, cy) {
+  const g = p.grid, ph = g.length, pw = Math.max(...g.map(r => r.length));
+  const ox = cx - Math.floor(pw/2), oy = cy - Math.floor(ph/2), pts = [];
+  for (let j=0;j<ph;j++) for (let i=0;i<g[j].length;i++)
+    if (g[j][i] === '#') pts.push([ox+i, oy+j]);
+  return pts;
+}
+
+// stamp the active pattern onto the grid (symmetry-aware)
+function stampPattern(cx, cy) {
+  if (!activePattern) return;
+  const color = cPick.value;
+  beginStroke();
+  patternPts(activePattern, cx, cy).forEach(([x,y]) => {
+    if (x>=0 && x<gW && y>=0 && y<gH) paintSym(x, y, color);
+  });
+  endStroke(); renderKnots(); addSwatch(color);
+}
+
+// draw a motif grid into a small canvas (for thumbnails)
+function drawMatrix(cv, grid, color) {
+  const ph = grid.length, pw = Math.max(...grid.map(r => r.length));
+  const s = Math.max(2, Math.floor(64 / Math.max(pw, ph)));
+  cv.width = pw*s; cv.height = ph*s;
+  const ctx = cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.fillStyle = color;
+  for (let j=0;j<ph;j++) for (let i=0;i<grid[j].length;i++)
+    if (grid[j][i] === '#') ctx.fillRect(i*s, j*s, s, s);
+}
+
+function selectPattern(p) {
+  activePattern = p; tool = 'stamp';
+  document.querySelectorAll('.tools button').forEach(b => b.classList.remove('on'));
+  G.style.cursor = 'copy';
+  selPat.innerHTML = (lang === 'az' ? '🧩 <b style="color:var(--ac)">' + pNm(p) + '</b> seçildi — vurub yerləşdir.'
+                                    : '🧩 Stamping <b style="color:var(--ac)">' + pNm(p) + '</b> — tap the canvas to place it.');
+  closePatModal();
+}
+
+function openPatModal()  { modalBack.style.display = 'flex'; }
+function closePatModal() { modalBack.style.display = 'none'; }
+
+function renderPatItems() {
+  patGrid.innerHTML = '';
+  PATTERNS.forEach((p, idx) => {
+    const item = document.createElement('div');
+    item.className = 'pm-item';
+    const cv = document.createElement('canvas');
+    drawMatrix(cv, p.grid, MOTIF_COLORS[idx % MOTIF_COLORS.length]);
+    item.appendChild(cv);
+    const nm = document.createElement('div'); nm.className = 'pm-nm'; nm.textContent = pNm(p);
+    const sub = document.createElement('div'); sub.className = 'pm-az'; sub.textContent = lang === 'az' ? p.en : p.az;
+    item.appendChild(nm); item.appendChild(sub);
+    item.title = pMean(p);
+    item.addEventListener('click', () => selectPattern(p));
+    patGrid.appendChild(item);
+  });
+}
+
+function setupPatterns() {
+  renderPatItems();
+
+  btnPat.addEventListener('click', openPatModal);
+  patClose.addEventListener('click', closePatModal);
+  modalBack.addEventListener('click', e => { if (e.target === modalBack) closePatModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePatModal(); });
+
+  // live hover preview while a pattern is selected (mouse only)
+  G.addEventListener('mousemove', e => {
+    if (drawing || tool !== 'stamp' || !activePattern) return;
+    const t = cellAt(e.clientX, e.clientY);
+    if (!t) { clrPrev(); return; }
+    showPrev(patternPts(activePattern, +t.dataset.x, +t.dataset.y));
+  });
+  G.addEventListener('mouseleave', () => { if (tool === 'stamp') clrPrev(); });
+}
+
+// ════════════════════════════════════════════════
+//  LANDING PAGE BUILDER  (schools + motif gallery)
+// ════════════════════════════════════════════════
+let landingBuilt = false;
+function buildLanding() {
+  if (landingBuilt) return; landingBuilt = true;
+
+  renderSchools();
+  renderMotifGallery();
+}
+
+// Real Azerbaijani carpet photos (Wikimedia Commons, stable URLs) + bilingual notes
+const SCHOOLS = [
+  { n:'Quba', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Azerbaijani_carpet_AGADJLI_Latif_Kerimov.jpg/1280px-Azerbaijani_carpet_AGADJLI_Latif_Kerimov.jpg',
+    en:'Northern mountain weaves famed for fine knotting and intricate, stylised vegetal medallions on deep indigo grounds.',
+    az:'Şimal dağ kəndlərinin incə ilməli xalçaları — tünd lacivərd zəmində mürəkkəb, üslublaşdırılmış bitki medalyonları ilə məşhurdur.'},
+  { n:'Şirvan', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Azerbaijani_carpet_BAHAR_Latif_Kerimov.jpg/1280px-Azerbaijani_carpet_BAHAR_Latif_Kerimov.jpg',
+    en:'Elegant geometric medallions rich in symbolism — among the most refined and collectible of all Caucasian carpets.',
+    az:'Zərif həndəsi medalyonlar və zəngin simvolika — bütün Qafqaz xalçaları arasında ən incə və qiymətlilərindəndir.'},
+  { n:'Bakı-Abşeron', img:'https://upload.wikimedia.org/wikipedia/commons/4/4e/Azerbaijani_carpet_from_Shusha.jpg',
+    en:'Soft palettes and graceful medallions from the Absheron peninsula, often woven with delicate buta motifs.',
+    az:'Abşeron yarımadasının yumşaq rəngli, zərif medalyonlu xalçaları — çox vaxt incə buta naxışları ilə toxunur.'},
+  { n:'Gəncə', img:'https://upload.wikimedia.org/wikipedia/commons/4/41/Azerbaijani_carpet_%22Kedabek%22_of_Ganja_group.png',
+    en:'Bold, warm carpets that achieve striking effect with only a few colours of wool and silk.',
+    az:'Cəmi bir neçə rənglə təsirli effekt yaradan cəsur, isti çalarlı yun və ipək xalçalar.'},
+  { n:'Qazax', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Azerbaijani_carpets_from_Shusha_Carpet_Gallery.jpg/1280px-Azerbaijani_carpets_from_Shusha_Carpet_Gallery.jpg',
+    en:'Powerful large-scale geometric medallions and vivid reds — among the most iconic Caucasian rugs.',
+    az:'Güclü, iri həndəsi medalyonlar və parlaq qırmızılar — ən tanınmış Qafqaz xalçalarındandır.'},
+  { n:'Qarabağ', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Azerbaijani_carpet_Ajdahaly_from_Karabakh.JPG/1280px-Azerbaijani_carpet_Ajdahaly_from_Karabakh.JPG',
+    en:'The richest palette of all, echoing the subtle colours of Karabakh’s nature in lush floral designs.',
+    az:'Hamısının ən zəngin rəng palitrası — Qarabağ təbiətinin incə çalarlarını əks etdirən bol çiçəkli naxışlar.'},
+  { n:'Təbriz', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Azerbaijani_carpet_of_middle_ages_in_the_Museum_of_Azerbaijan_Carpet_and_Applied_Art.JPG/1280px-Azerbaijani_carpet_of_middle_ages_in_the_Museum_of_Azerbaijan_Carpet_and_Applied_Art.JPG',
+    en:'The most ancient school — celebrated for harmonious colour, fine detail and endless variety of ornament.',
+    az:'Ən qədim məktəb — rəng harmoniyası, incə detalları və sonsuz naxış müxtəlifliyi ilə məşhurdur.'},
+];
+
+function renderSchools() {
+  const sg = document.getElementById('schoolGrid');
+  if (!sg) return;
+  sg.innerHTML = '';
+  SCHOOLS.forEach(s => {
+    const card = document.createElement('div'); card.className = 'ld-card';
+    card.innerHTML =
+      '<div class="ld-ph" style="background-image:url(\'' + s.img + '\')">' +
+        '<span class="ld-ph-t">' + s.n + '</span></div>' +
+      '<div class="ld-body"><p>' + (lang === 'az' ? s.az : s.en) + '</p></div>';
+    sg.appendChild(card);
+  });
+}
+
+function renderMotifGallery() {
+  const mg = document.getElementById('motifGrid');
+  if (!mg) return;
+  mg.innerHTML = '';
+  PATTERNS.forEach((p, idx) => {
+    const m = document.createElement('div'); m.className = 'ld-motif';
+    const cv = document.createElement('canvas');
+    drawMatrix(cv, p.grid, MOTIF_COLORS[idx % MOTIF_COLORS.length]);
+    m.appendChild(cv);
+    const h = document.createElement('h4'); h.textContent = pNm(p);
+    const az = document.createElement('div'); az.className = 'az'; az.textContent = lang === 'az' ? p.en : p.az;
+    const d = document.createElement('p'); d.textContent = pMean(p);
+    m.appendChild(h); m.appendChild(az); m.appendChild(d);
+    mg.appendChild(m);
+  });
 }
 
 // ════════════════════════════════════════════════
